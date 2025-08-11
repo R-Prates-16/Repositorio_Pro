@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - Digital Portfolio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">
+                        <i class="mdi mdi-account-circle me-2"></i>My Profile
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="mb-3">
+                                {% if current_user.profile_image %}
+                                    <img src="{{ url_for('static', filename=current_user.profile_image) }}" 
+                                         class="rounded-circle" 
+                                         width="120" height="120" 
+                                         alt="Profile Image">
+                                {% else %}
+                                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                         style="width: 120px; height: 120px;">
+                                        <i class="mdi mdi-account text-white" style="font-size: 60px;"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <h5>{{ current_user.full_name or current_user.username }}</h5>
+                            <p class="text-muted">{{ current_user.email }}</p>
+                            {% if current_user.is_owner %}
+                                <span class="badge bg-primary">Portfolio Owner</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Community Member</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <form method="POST" enctype="multipart/form-data">
+                                {{ form.hidden_tag() }}
+                                
+                                <div class="mb-3">
+                                    {{ form.full_name.label(class="form-label") }}
+                                    {{ form.full_name(class="form-control") }}
+                                    {% if form.full_name.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.full_name.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    {{ form.bio.label(class="form-label") }}
+                                    {{ form.bio(class="form-control", rows="4", placeholder="Tell us about yourself...") }}
+                                    {% if form.bio.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.bio.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    {{ form.profile_image.label(class="form-label") }}
+                                    {{ form.profile_image(class="form-control") }}
+                                    {% if form.profile_image.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.profile_image.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <small class="text-muted">Supported formats: JPG, PNG, GIF (max 16MB)</small>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="mdi mdi-content-save me-2"></i>Update Profile
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User Stats -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Account Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-6">
+                            <div class="border-end">
+                                <h4 class="fw-bold text-primary">{{ current_user.created_at.strftime('%B %Y') }}</h4>
+                                <small class="text-muted">Member Since</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h4 class="fw-bold text-success">{{ current_user.comments|length }}</h4>
+                            <small class="text-muted">Comments Made</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

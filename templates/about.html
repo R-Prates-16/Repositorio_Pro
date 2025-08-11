@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}About Me - Digital Portfolio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Page Header -->
+            <div class="text-center mb-5">
+                <h1 class="fw-bold">About Me</h1>
+                <p class="lead text-muted">Get to know the person behind the portfolio</p>
+            </div>
+            
+            <!-- About Content -->
+            {% if about_me %}
+            <div class="card mb-5">
+                <div class="card-body p-4">
+                    <div class="content">
+                        {{ about_me.content|safe }}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Skills Section -->
+            {% if about_me.skills %}
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Skills & Technologies</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for skill in about_me.skills.split('\n') %}
+                            {% if skill.strip() %}
+                            <div class="col-md-6 mb-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="mdi mdi-check-circle text-success me-2"></i>
+                                    <span>{{ skill.strip() }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Experience Section -->
+            {% if about_me.experience %}
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Experience</h3>
+                </div>
+                <div class="card-body">
+                    <div class="content">
+                        {{ about_me.experience|safe }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Education Section -->
+            {% if about_me.education %}
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Education</h3>
+                </div>
+                <div class="card-body">
+                    <div class="content">
+                        {{ about_me.education|safe }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% else %}
+            <!-- Default content when no about_me data exists -->
+            <div class="card mb-5">
+                <div class="card-body text-center py-5">
+                    <i class="mdi mdi-account-circle mdi-64px text-muted mb-3"></i>
+                    <h3>Welcome to My Portfolio</h3>
+                    <p class="text-muted">I'm passionate about technology and creating innovative solutions.</p>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- GitHub Repositories -->
+            {% if github_repos %}
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">
+                        <i class="mdi mdi-github me-2"></i>GitHub Repositories
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for repo in github_repos %}
+                        <div class="col-md-6 mb-3">
+                            <div class="border rounded p-3">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="fw-bold mb-1">
+                                        <a href="{{ repo.url }}" target="_blank" class="text-decoration-none">
+                                            {{ repo.name }}
+                                        </a>
+                                    </h6>
+                                    <a href="{{ repo.url }}" target="_blank" class="text-muted">
+                                        <i class="mdi mdi-open-in-new"></i>
+                                    </a>
+                                </div>
+                                
+                                {% if repo.description %}
+                                <p class="text-muted small mb-2">{{ repo.description }}</p>
+                                {% endif %}
+                                
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex gap-3">
+                                        {% if repo.language %}
+                                        <small class="text-muted">
+                                            <i class="mdi mdi-code-braces me-1"></i>{{ repo.language }}
+                                        </small>
+                                        {% endif %}
+                                        <small class="text-muted">
+                                            <i class="mdi mdi-star me-1"></i>{{ repo.stars }}
+                                        </small>
+                                        <small class="text-muted">
+                                            <i class="mdi mdi-source-fork me-1"></i>{{ repo.forks }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Digital Portfolio{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Admin Dashboard</h2>
+            <p class="text-muted mb-0">Manage your portfolio content and settings</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('admin.new_project') }}" class="btn btn-primary">
+                <i class="mdi mdi-plus me-1"></i>New Project
+            </a>
+            <a href="{{ url_for('admin.new_achievement') }}" class="btn btn-outline-primary">
+                <i class="mdi mdi-trophy-outline me-1"></i>New Achievement
+            </a>
+        </div>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="row mb-5">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="fw-bold text-primary">{{ projects_count }}</h3>
+                            <p class="text-muted mb-0">Projects</p>
+                        </div>
+                        <i class="mdi mdi-folder-multiple mdi-36px text-primary"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="fw-bold text-warning">{{ achievements_count }}</h3>
+                            <p class="text-muted mb-0">Achievements</p>
+                        </div>
+                        <i class="mdi mdi-trophy mdi-36px text-warning"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="fw-bold text-info">{{ comments_count }}</h3>
+                            <p class="text-muted mb-0">Comments</p>
+                        </div>
+                        <i class="mdi mdi-comment-multiple mdi-36px text-info"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="fw-bold text-success">{{ visitors_count }}</h3>
+                            <p class="text-muted mb-0">Visitors</p>
+                        </div>
+                        <i class="mdi mdi-account-group mdi-36px text-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Recent Projects -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent Projects</h5>
+                    <a href="{{ url_for('admin.projects') }}" class="btn btn-sm btn-outline-primary">
+                        View All
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    {% if recent_projects %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Project</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Engagement</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for project in recent_projects %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            {% if project.image_url %}
+                                                <img src="{{ url_for('static', filename=project.image_url) }}" 
+                                                     class="rounded me-2" width="40" height="40" alt="{{ project.title }}">
+                                            {% else %}
+                                                <div class="bg-secondary rounded d-flex align-items-center justify-content-center me-2" 
+                                                     style="width: 40px; height: 40px;">
+                                                    <i class="mdi mdi-image text-white"></i>
+                                                </div>
+                                            {% endif %}
+                                            <div>
+                                                <h6 class="mb-0">{{ project.title[:30] }}{% if project.title|length > 30 %}...{% endif %}</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info">{{ project.category|title }}</span>
+                                    </td>
+                                    <td>
+                                        {% if project.is_published %}
+                                            <span class="badge bg-success">Published</span>
+                                        {% else %}
+                                            <span class="badge bg-warning">Draft</span>
+                                        {% endif %}
+                                        {% if project.is_featured %}
+                                            <span class="badge bg-primary">Featured</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <small>
+                                            <i class="mdi mdi-heart text-danger me-1"></i>{{ project.like_count }}
+                                            <i class="mdi mdi-comment text-info ms-2 me-1"></i>{{ project.comment_count }}
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">{{ project.created_at.strftime('%m/%d/%y') }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ url_for('public.project_detail', id=project.id) }}" 
+                                               class="btn btn-outline-primary" title="View">
+                                                <i class="mdi mdi-eye"></i>
+                                            </a>
+                                            <a href="{{ url_for('admin.edit_project', id=project.id) }}" 
+                                               class="btn btn-outline-secondary" title="Edit">
+                                                <i class="mdi mdi-pencil"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="mdi mdi-folder-plus-outline mdi-48px text-muted"></i>
+                        <p class="text-muted mt-2">No projects yet</p>
+                        <a href="{{ url_for('admin.new_project') }}" class="btn btn-primary">Create Your First Project</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Comments -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Recent Comments</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_comments %}
+                    {% for comment in recent_comments %}
+                    <div class="d-flex mb-3 {% if not loop.last %}border-bottom pb-3{% endif %}">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" 
+                             style="width: 35px; height: 35px;">
+                            <i class="mdi mdi-account text-white small"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1 small">{{ comment.author.full_name or comment.author.username }}</h6>
+                            <p class="mb-1 small text-muted">{{ comment.content[:50] }}{% if comment.content|length > 50 %}...{% endif %}</p>
+                            <div class="d-flex justify-content-between">
+                                <small class="text-muted">on {{ comment.project.title[:20] }}{% if comment.project.title|length > 20 %}...{% endif %}</small>
+                                <small class="text-muted">{{ comment.created_at.strftime('%m/%d') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="mdi mdi-comment-outline mdi-48px text-muted"></i>
+                        <p class="text-muted mt-2 mb-0">No comments yet</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <a href="{{ url_for('admin.projects') }}" class="btn btn-outline-primary w-100">
+                                <i class="mdi mdi-folder-multiple d-block mb-2" style="font-size: 2rem;"></i>
+                                Manage Projects
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <a href="{{ url_for('admin.achievements') }}" class="btn btn-outline-warning w-100">
+                                <i class="mdi mdi-trophy d-block mb-2" style="font-size: 2rem;"></i>
+                                Manage Achievements
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <a href="{{ url_for('admin.settings') }}" class="btn btn-outline-info w-100">
+                                <i class="mdi mdi-cog d-block mb-2" style="font-size: 2rem;"></i>
+                                Settings
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <a href="{{ url_for('public.index') }}" class="btn btn-outline-success w-100">
+                                <i class="mdi mdi-eye d-block mb-2" style="font-size: 2rem;"></i>
+                                View Portfolio
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

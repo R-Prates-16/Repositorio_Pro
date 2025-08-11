@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} - Digital Portfolio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Project Content -->
+        <div class="col-lg-8">
+            <!-- Project Header -->
+            <div class="mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('public.index') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('public.projects') }}">Projects</a></li>
+                        <li class="breadcrumb-item active">{{ project.title }}</li>
+                    </ol>
+                </nav>
+                
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h1 class="fw-bold">{{ project.title }}</h1>
+                        <span class="badge bg-primary me-2">{{ project.category|title }}</span>
+                        {% if project.is_featured %}
+                            <span class="badge bg-warning text-dark">Featured</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <!-- Like Button -->
+                        {% if current_user.is_authenticated %}
+                        <button class="like-btn btn p-2 {{ 'liked' if user_liked else '' }}" 
+                                data-project-id="{{ project.id }}"
+                                title="{{ 'Unlike' if user_liked else 'Like' }} this project">
+                            <i class="mdi mdi-heart"></i>
+                            <span class="like-count">{{ project.like_count }}</span>
+                        </button>
+                        {% else %}
+                        <span class="btn p-2 text-muted">
+                            <i class="mdi mdi-heart"></i>
+                            <span>{{ project.like_count }}</span>
+                        </span>
+                        {% endif %}
+                        
+                        <!-- Share Button -->
+                        <button class="btn btn-outline-primary" onclick="shareOnLinkedIn()">
+                            <i class="mdi mdi-linkedin"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <p class="lead text-muted">{{ project.description }}</p>
+            </div>
+            
+            <!-- Project Image -->
+            {% if project.image_url %}
+            <div class="mb-4">
+                <img src="{{ url_for('static', filename=project.image_url) }}" 
+                     class="img-fluid rounded shadow-sm" 
+                     alt="{{ project.title }}">
+            </div>
+            {% endif %}
+            
+            <!-- Project Content -->
+            {% if project.content %}
+            <div class="mb-4">
+                <h3 class="fw-bold mb-3">Project Details</h3>
+                <div class="content">
+                    {{ project.content|safe }}
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Technologies -->
+            {% if project.technologies %}
+            <div class="mb-4">
+                <h4 class="fw-bold mb-3">Technologies Used</h4>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for tech in project.technologies.split(',') %}
+                        <span class="badge bg-secondary">{{ tech.strip() }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Project Links -->
+            <div class="mb-5">
+                <h4 class="fw-bold mb-3">Links</h4>
+                <div class="d-flex gap-3">
+                    {% if project.demo_url %}
+                    <a href="{{ project.demo_url }}" target="_blank" class="btn btn-success">
+                        <i class="mdi mdi-open-in-new me-2"></i>Live Demo
+                    </a>
+                    {% endif %}
+                    {% if project.github_url %}
+                    <a href="{{ project.github_url }}" target="_blank" class="btn btn-dark">
+                        <i class="mdi mdi-github me-2"></i>Source Code
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Comments Section -->
+            <div class="comments-section">
+                <h4 class="fw-bold mb-4">Comments ({{ comments|length }})</h4>
+                
+                <!-- Add Comment Form -->
+                {% if current_user.is_authenticated %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('public.add_comment', id=project.id) }}">
+                            {{ form.hidden_tag() }}
+                            <div class="mb-3">
+                                {{ form.content(class="form-control", placeholder="Share your thoughts about this project...") }}
+                                {% if form.content.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {% for error in form.content.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="mdi mdi-comment-plus me-2"></i>Add Comment
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="mdi mdi-information me-2"></i>
+                    <a href="{{ url_for('auth.login') }}">Login</a> to leave a comment.
+                </div>
+                {% endif %}
+                
+                <!-- Comments List -->
+                {% if comments %}
+                <div class="comments-list">
+                    {% for comment in comments %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                        <i class="mdi mdi-account text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">{{ comment.author.full_name or comment.author.username }}</h6>
+                                        <small class="text-muted">{{ comment.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mb-0">{{ comment.content }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-4 text-muted">
+                    <i class="mdi mdi-comment-outline mdi-48px"></i>
+                    <p class="mt-2">No comments yet. Be the first to share your thoughts!</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="sticky-top" style="top: 100px;">
+                <!-- Project Stats -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Project Stats</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Likes</span>
+                            <span class="fw-bold like-count">{{ project.like_count }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Comments</span>
+                            <span class="fw-bold">{{ project.comment_count }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Created</span>
+                            <span class="fw-bold">{{ project.created_at.strftime('%b %Y') }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Related Projects -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">More Projects</h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="{{ url_for('public.projects') }}" class="btn btn-outline-primary w-100">
+                            <i class="mdi mdi-folder-multiple me-2"></i>Browse All Projects
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Like functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const likeBtn = document.querySelector('.like-btn[data-project-id]');
+    if (likeBtn) {
+        likeBtn.addEventListener('click', function() {
+            const projectId = this.dataset.projectId;
+            
+            fetch(`/project/${projectId}/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.classList.toggle('liked', data.liked);
+                    document.querySelectorAll('.like-count').forEach(el => {
+                        el.textContent = data.like_count;
+                    });
+                }
+            });
+        });
+    }
+});
+
+// LinkedIn share functionality
+function shareOnLinkedIn() {
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent('{{ project.title }}');
+    const summary = encodeURIComponent('{{ project.description }}');
+    
+    const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${title}&summary=${summary}`;
+    window.open(linkedInUrl, '_blank', 'width=600,height=400');
+}
+</script>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Digital Portfolio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h3 class="mb-0">Login</h3>
+                    <p class="text-muted small mb-0">Access your account</p>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.username.label(class="form-label") }}
+                            {{ form.username(class="form-control") }}
+                            {% if form.username.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.username.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.password.label(class="form-label") }}
+                            {{ form.password(class="form-control") }}
+                            {% if form.password.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.password.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="mdi mdi-login me-2"></i>Login
+                        </button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <small class="text-muted">
+                        Don't have an account? 
+                        <a href="{{ url_for('auth.register') }}">Register here</a>
+                    </small>
+                </div>
+            </div>
+            
+            <!-- Demo Account Info -->
+            <div class="card mt-3">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Demo Account</h6>
+                    <p class="mb-2"><strong>Admin:</strong> admin / admin123</p>
+                    <small class="text-muted">Use this account to access the admin panel</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

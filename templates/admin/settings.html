@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - Admin{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- About Me Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="mdi mdi-account-circle me-2"></i>About Me Settings
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.content.label(class="form-label") }}
+                            {{ form.content(class="form-control", rows="6", placeholder="Tell visitors about yourself, your background, passion for technology...") }}
+                            {% if form.content.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.content.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.skills.label(class="form-label") }}
+                            {{ form.skills(class="form-control", rows="4", placeholder="JavaScript\nPython\nReact\nNode.js\n...") }}
+                            {% if form.skills.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.skills.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                            <small class="text-muted">Enter one skill per line</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.experience.label(class="form-label") }}
+                            {{ form.experience(class="form-control", rows="4", placeholder="Your professional experience, career highlights...") }}
+                            {% if form.experience.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.experience.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.education.label(class="form-label") }}
+                            {{ form.education(class="form-control", rows="4", placeholder="Your educational background, certifications...") }}
+                            {% if form.education.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.education.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="mdi mdi-content-save me-1"></i>Save About Me
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- GitHub Integration -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="mdi mdi-github me-2"></i>GitHub Integration
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Sync GitHub Repos -->
+                    <div class="mb-4">
+                        <h6>Sync Repositories</h6>
+                        <p class="text-muted small">Import your GitHub repositories to display on your About page.</p>
+                        <form method="POST" action="{{ url_for('admin.sync_github') }}" class="d-flex gap-2">
+                            <input type="text" name="github_username" class="form-control" 
+                                   placeholder="Enter your GitHub username" required>
+                            <button type="submit" class="btn btn-outline-primary">
+                                <i class="mdi mdi-sync me-1"></i>Sync
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- GitHub Repositories List -->
+                    {% if github_repos %}
+                    <div>
+                        <h6>Manage Repositories</h6>
+                        <p class="text-muted small">Toggle which repositories to display on your About page.</p>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Repository</th>
+                                        <th>Language</th>
+                                        <th>Stars</th>
+                                        <th>Forks</th>
+                                        <th>Display</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for repo in github_repos %}
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <strong>{{ repo.name }}</strong>
+                                                {% if repo.description %}
+                                                <br><small class="text-muted">{{ repo.description[:50] }}{% if repo.description|length > 50 %}...{% endif %}</small>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% if repo.language %}
+                                                <span class="badge bg-secondary">{{ repo.language }}</span>
+                                            {% else %}
+                                                <span class="text-muted">-</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ repo.stars }}</td>
+                                        <td>{{ repo.forks }}</td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input repo-toggle" type="checkbox" 
+                                                       data-repo-id="{{ repo.id }}"
+                                                       {% if repo.is_displayed %}checked{% endif %}>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4 text-muted">
+                        <i class="mdi mdi-github mdi-48px"></i>
+                        <p class="mt-2">No repositories found. Sync with your GitHub account to get started.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle repository toggle
+    document.querySelectorAll('.repo-toggle').forEach(function(toggle) {
+        toggle.addEventListener('change', function() {
+            const repoId = this.dataset.repoId;
+            
+            fetch(`/admin/toggle-repo/${repoId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    // Revert toggle if failed
+                    this.checked = !this.checked;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Revert toggle if failed
+                this.checked = !this.checked;
+            });
+        });
+    });
+});
+</script>
+{% endblock %}
