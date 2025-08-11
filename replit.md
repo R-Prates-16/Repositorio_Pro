@@ -7,6 +7,8 @@ The system is designed as a personal portfolio platform where the portfolio owne
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
+Design preferences: Professional and technical appearance with modern UX/UI standards.
+Data policy: Only use authentic data, never add synthetic/mock projects or content.
 
 # System Architecture
 
