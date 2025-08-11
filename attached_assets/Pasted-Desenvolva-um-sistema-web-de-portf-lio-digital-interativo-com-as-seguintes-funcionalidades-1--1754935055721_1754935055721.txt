@@ -1,0 +1,95 @@
+Desenvolva um sistema web de portfólio digital interativo com as seguintes funcionalidades:
+
+1. **Área Administrativa (Proprietário do Portfólio)**
+   - Cadastro: permita ao usuário cadastrar novas conquistas e projetos.
+   - Edição: permita ao usuário editar conquistas e projetos cadastrados.
+   - Exclusão: permita ao usuário excluir conquistas e projetos cadastrados.
+   - Upload: permita o upload de imagens, vídeos ou links de demonstração.
+   - Organização: implemente uma funcionalidade de organização por categorias ou tags.
+   - Publicação: permita ao usuário escolher entre publicar ou salvar como rascunho suas conquistas e projetos.
+   - Integração com GitHub: carregue automaticamente os repositórios do GitHub do proprietário para adicionar ao portfólio.
+
+2. **Área Pública (Visitantes)**
+   - Visualização: os visitantes devem poder visualizar os projetos e conquistas do proprietário.
+   - Curtidas: implemente um botão de curtir com contador de curtidas.
+   - Comentários: permita que apenas usuários logados façam comentários.
+   - Compartilhamento: adicione um botão para compartilhar no LinkedIn com prévia personalizada.
+
+3. **Área de Autenticação**
+   - Cadastro de visitantes: permita que os visitantes se cadastrem fornecendo nome, e-mail e senha.
+   - Login: implemente uma funcionalidade de login para visitantes registrados.
+   - Recuperação de senha: adicione uma funcionalidade de recuperação de senha.
+   - Perfis de usuário: permita que visitantes tenham perfis com foto e informações básicas.
+
+4. **Funcionalidades Extras**
+   - Notificações: implemente um sistema de notificação para o proprietário quando um comentário for feito.
+   - Seção "Sobre Mim": adicione uma seção onde o proprietário pode se apresentar.
+   - Página inicial: crie uma página inicial que destaque os últimos projetos ou os mais curtidos.
+
+Especificações Técnicas:
+- **Frontend:** HTML, CSS, JavaScript, utilizando React ou Next.js para maior dinamismo.
+- **Backend:** Node.js com Express ou Python com Flask/Django.
+- **Banco de Dados:** MongoDB ou PostgreSQL.
+- **Integrações:** API do LinkedIn para a funcionalidade de compartilhamento e API do GitHub para listar automaticamente os repositórios do proprietário no portfólio.
+
+Por favor, forneça o código completo e bem documentado para cada uma dessas funcionalidades. A interface deve ser responsiva, funcionando tanto em desktops quanto em dispositivos móveis. Garanta que todos os componentes sejam otimizados para boa performance e usabilidade.
+```
+
+### Prompt para manus IA (Documentação)
+
+```plaintext
+Documente o processo de desenvolvimento de um sistema web de portfólio digital interativo com as seguintes especificações:
+
+1. **Área Administrativa (Proprietário do Portfólio)**
+   - Cadastro, edição, exclusão de conquistas e projetos.
+   - Upload de imagens, vídeos ou links de demonstração.
+   - Organização por categorias ou tags.
+   - Publicação ou rascunho.
+   - Integração com GitHub: carregamento automático dos repositórios do GitHub do proprietário.
+
+2. **Área Pública (Visitantes)**
+   - Visualização de projetos e conquistas.
+   - Botão de curtir com contador de curtidas.
+   - Campo de comentários para usuários logados.
+   - Botão para compartilhar no LinkedIn com prévia personalizada.
+
+3. **Área de Autenticação**
+   - Cadastro e login de visitantes (nome, e-mail e senha).
+   - Recuperação de senha.
+   - Perfis de usuário com foto e informações básicas.
+
+4. **Funcionalidades Extras**
+   - Sistema de notificação para o proprietário quando um comentário é feito.
+   - Seção "Sobre Mim" para apresentação pessoal.
+   - Página inicial com destaques dos últimos ou mais curtidos projetos.
+
+Detalhe todos os seguintes passos:
+1. **Definição de Requisitos e Planejamento:**
+   - Mapeamento das funcionalidades requeridas e desenho de wireframes.
+
+2. **Configuração do Ambiente de Desenvolvimento:**
+   - Configuração do ambiente do Replit, incluindo dependências necessárias (React, Next.js, Node.js, MongoDB, Flask, etc.).
+
+3. **Desenvolvimento da Área Administrativa:**
+   - Implementação do CRUD (Create, Read, Update, Delete) para conquistas e projetos.
+   - Detalhamento sobre como realizar uploads de mídia e organizar por categorias.
+   - Integração com a API do GitHub para carregar automaticamente os repositórios do proprietário.
+
+4. **Desenvolvimento da Área Pública:**
+   - Criação da interface para visualização de projetos, implementação de curtidas e comentários.
+   - Integração com a API do LinkedIn para compartilhamento.
+
+5. **Implementação da Área de Autenticação:**
+   - Desenvolvimento das funcionalidades de cadastro, login, recuperação de senha e perfis de usuário.
+
+6. **Desenvolvimento de Funcionalidades Extras:**
+   - Implementação do sistema de notificações, seção "Sobre Mim" e página inicial.
+
+7. **Testes e Validação:**
+   - Execução de testes unitários e integração, além de testes de responsividade.
+
+8. **Finalização e Entrega:**
+   - Documentação do uso das IAs (Replit AI, GitHub Copilot, etc.), ajustes manuais e como utilizar o sistema.
+
+Estruture a documentação para garantir que qualquer desenvolvedor possa entender e continuar o projeto. Inclua também guias de instalação e configuração, especificações de API, e exemplos de uso do sistema.
+```
