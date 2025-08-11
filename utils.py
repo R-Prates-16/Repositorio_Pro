@@ -62,7 +62,7 @@ def fetch_github_repos(username):
     except Exception as e:
         return False, f"Error fetching repositories: {str(e)}"
 
-def generate_linkedin_share_url(project):
+def generate_linkedin_share_url(project, request):
     """Generate LinkedIn share URL for a project"""
     base_url = "https://www.linkedin.com/sharing/share-offsite/"
     project_url = f"{request.url_root}project/{project.id}"

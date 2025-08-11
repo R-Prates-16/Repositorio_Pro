@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Achievements - Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Manage Achievements</h2>
+            <p class="text-muted mb-0">Create and organize your professional milestones</p>
+        </div>
+        <a href="{{ url_for('admin.new_achievement') }}" class="btn btn-primary">
+            <i class="mdi mdi-plus me-1"></i>New Achievement
+        </a>
+    </div>
+    
+    {% if achievements %}
+    <!-- Achievements Grid -->
+    <div class="row">
+        {% for achievement in achievements %}
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <i class="mdi mdi-trophy text-warning me-2"></i>
+                        <span class="badge bg-{{ 'primary' if achievement.category == 'certification' else 
+                                             'success' if achievement.category == 'award' else 
+                                             'info' if achievement.category == 'competition' else 
+                                             'warning' }}">
+                            {{ achievement.category|title }}
+                        </span>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary" type="button" 
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('admin.edit_achievement', id=achievement.id) }}">
+                                <i class="mdi mdi-pencil me-1"></i>Edit
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><button class="dropdown-item text-danger" 
+                                       onclick="deleteAchievement({{ achievement.id }}, '{{ achievement.title }}')">
+                                <i class="mdi mdi-delete me-1"></i>Delete
+                            </button></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="flex-shrink-0">
+                            {% if achievement.image_url %}
+                            <img src="{{ url_for('static', filename=achievement.image_url) }}" 
+                                 class="rounded" width="50" height="50" alt="{{ achievement.title }}">
+                            {% else %}
+                            <div class="bg-warning rounded d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 50px;">
+                                <i class="mdi mdi-trophy text-dark"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="card-title mb-1">{{ achievement.title }}</h6>
+                            {% if achievement.date_achieved %}
+                            <small class="text-muted">
+                                <i class="mdi mdi-calendar me-1"></i>{{ achievement.date_achieved.strftime('%B %Y') }}
+                            </small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <p class="card-text">{{ achievement.description[:100] }}{% if achievement.description|length > 100 %}...{% endif %}</p>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            {% if achievement.is_published %}
+                                <span class="badge bg-success">Published</span>
+                            {% else %}
+                                <span class="badge bg-warning">Draft</span>
+                            {% endif %}
+                        </div>
+                        <div class="btn-group btn-group-sm">
+                            {% if achievement.certificate_url %}
+                            <a href="{{ achievement.certificate_url }}" target="_blank" 
+                               class="btn btn-outline-primary" title="View Certificate">
+                                <i class="mdi mdi-certificate"></i>
+                            </a>
+                            {% endif %}
+                            <a href="{{ url_for('admin.edit_achievement', id=achievement.id) }}" 
+                               class="btn btn-outline-secondary" title="Edit">
+                                <i class="mdi mdi-pencil"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <small class="text-muted">
+                        Created {{ achievement.created_at.strftime('%m/%d/%y') }}
+                    </small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Statistics -->
+    <div class="row mt-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ achievements|selectattr('category', 'equalto', 'certification')|list|length }}</h4>
+                            <p class="mb-0">Certifications</p>
+                        </div>
+                        <i class="mdi mdi-certificate mdi-36px"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ achievements|selectattr('category', 'equalto', 'award')|list|length }}</h4>
+                            <p class="mb-0">Awards</p>
+                        </div>
+                        <i class="mdi mdi-trophy mdi-36px"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ achievements|selectattr('category', 'equalto', 'competition')|list|length }}</h4>
+                            <p class="mb-0">Competitions</p>
+                        </div>
+                        <i class="mdi mdi-medal mdi-36px"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ achievements|selectattr('is_published', 'equalto', true)|list|length }}</h4>
+                            <p class="mb-0">Published</p>
+                        </div>
+                        <i class="mdi mdi-eye mdi-36px"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% else %}
+    <!-- Empty State -->
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <i class="mdi mdi-trophy-outline mdi-64px text-muted mb-3"></i>
+            <h3>No Achievements Yet</h3>
+            <p class="text-muted mb-4">Start showcasing your professional milestones and certifications.</p>
+            <a href="{{ url_for('admin.new_achievement') }}" class="btn btn-primary">
+                <i class="mdi mdi-plus me-2"></i>Add Your First Achievement
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong id="achievementTitle"></strong>?</p>
+                <p class="text-muted small">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="mdi mdi-delete me-1"></i>Delete Achievement
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Delete achievement
+function deleteAchievement(achievementId, achievementTitle) {
+    document.getElementById('achievementTitle').textContent = achievementTitle;
+    document.getElementById('deleteForm').action = `/admin/achievement/delete/${achievementId}`;
+    
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    modal.show();
+}
+</script>
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - Digital Portfolio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Page Header -->
+            <div class="text-center mb-5">
+                <h1 class="fw-bold">Get In Touch</h1>
+                <p class="lead text-muted">Let's discuss opportunities, collaborations, or just say hello!</p>
+            </div>
+            
+            <!-- Contact Cards -->
+            <div class="row mb-5">
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="mdi mdi-email mdi-36px text-primary mb-3"></i>
+                            <h5 class="card-title">Email</h5>
+                            {% if owner %}
+                            <p class="card-text">{{ owner.email }}</p>
+                            <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard('{{ owner.email }}')">
+                                <i class="mdi mdi-content-copy me-1"></i>Copy
+                            </button>
+                            {% else %}
+                            <p class="card-text">admin@portfolio.com</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="mdi mdi-linkedin mdi-36px text-primary mb-3"></i>
+                            <h5 class="card-title">LinkedIn</h5>
+                            <p class="card-text">Connect with me professionally</p>
+                            <a href="https://linkedin.com" target="_blank" class="btn btn-outline-primary btn-sm">
+                                <i class="mdi mdi-open-in-new me-1"></i>Visit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="mdi mdi-github mdi-36px text-primary mb-3"></i>
+                            <h5 class="card-title">GitHub</h5>
+                            <p class="card-text">Check out my code</p>
+                            <a href="https://github.com" target="_blank" class="btn btn-outline-primary btn-sm">
+                                <i class="mdi mdi-open-in-new me-1"></i>Visit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Send a Message</h4>
+                </div>
+                <div class="card-body">
+                    <form id="contactForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <select class="form-select" id="subject" required>
+                                <option value="">Select a topic</option>
+                                <option value="collaboration">Collaboration Opportunity</option>
+                                <option value="job">Job Opportunity</option>
+                                <option value="project">Project Inquiry</option>
+                                <option value="general">General Question</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" rows="5" 
+                                    placeholder="Tell me about your project, idea, or question..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="mdi mdi-send me-2"></i>Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Additional Info -->
+            <div class="text-center mt-5">
+                <p class="text-muted">
+                    <i class="mdi mdi-clock me-1"></i>
+                    I typically respond within 24 hours
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get form data
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const subject = document.getElementById('subject').value;
+    const message = document.getElementById('message').value;
+    
+    // Create mailto link
+    const mailtoLink = `mailto:admin@portfolio.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+    
+    // Open email client
+    window.location.href = mailtoLink;
+    
+    // Show success message
+    const alert = document.createElement('div');
+    alert.className = 'alert alert-success alert-dismissible fade show mt-3';
+    alert.innerHTML = `
+        <i class="mdi mdi-check-circle me-2"></i>
+        Email client opened! Your message has been prepared.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.getElementById('contactForm').appendChild(alert);
+    
+    // Clear form
+    this.reset();
+});
+
+// Copy to clipboard function (if not already defined globally)
+if (typeof window.copyToClipboard === 'undefined') {
+    window.copyToClipboard = function(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            // Show success message
+            const toast = document.createElement('div');
+            toast.className = 'position-fixed top-0 end-0 p-3';
+            toast.style.zIndex = '1056';
+            toast.innerHTML = `
+                <div class="toast show" role="alert">
+                    <div class="toast-body bg-success text-white rounded">
+                        <i class="mdi mdi-check-circle me-2"></i>
+                        Copied to clipboard!
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        });
+    };
+}
+</script>
+{% endblock %}

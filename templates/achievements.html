@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Achievements - Digital Portfolio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="fw-bold">Achievements</h1>
+            <p class="text-muted">Milestones, certifications, and recognitions in my journey</p>
+        </div>
+    </div>
+    
+    <!-- Filter Bar -->
+    {% if categories %}
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+                <span class="text-muted me-2">Filter by type:</span>
+                <a href="{{ url_for('public.achievements') }}" 
+                   class="btn btn-sm {{ 'btn-primary' if not selected_category else 'btn-outline-primary' }}">
+                    All
+                </a>
+                {% for category in categories %}
+                <a href="{{ url_for('public.achievements', category=category) }}" 
+                   class="btn btn-sm {{ 'btn-primary' if selected_category == category else 'btn-outline-primary' }}">
+                    {{ category|title }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Achievements Grid -->
+    {% if achievements %}
+    <div class="row">
+        {% for achievement in achievements %}
+        <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="flex-shrink-0">
+                            {% if achievement.image_url %}
+                            <img src="{{ url_for('static', filename=achievement.image_url) }}" 
+                                 class="rounded" width="60" height="60" alt="{{ achievement.title }}">
+                            {% else %}
+                            <div class="bg-warning rounded d-flex align-items-center justify-content-center" 
+                                 style="width: 60px; height: 60px;">
+                                <i class="mdi mdi-trophy text-dark mdi-36px"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title mb-1">{{ achievement.title }}</h5>
+                                <span class="badge bg-{{ 'primary' if achievement.category == 'certification' else 
+                                                     'success' if achievement.category == 'award' else 
+                                                     'info' if achievement.category == 'competition' else 
+                                                     'warning' }}">
+                                    {{ achievement.category|title }}
+                                </span>
+                            </div>
+                            
+                            {% if achievement.date_achieved %}
+                            <p class="text-muted small mb-2">
+                                <i class="mdi mdi-calendar me-1"></i>
+                                {{ achievement.date_achieved.strftime('%B %Y') }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <p class="card-text">{{ achievement.description }}</p>
+                    
+                    {% if achievement.certificate_url %}
+                    <div class="mt-3">
+                        <a href="{{ achievement.certificate_url }}" target="_blank" 
+                           class="btn btn-sm btn-outline-primary">
+                            <i class="mdi mdi-certificate me-1"></i>View Certificate
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                {% if achievement.date_achieved %}
+                <div class="card-footer bg-transparent">
+                    <small class="text-muted">
+                        Achieved {{ achievement.date_achieved.strftime('%B %d, %Y') }}
+                    </small>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Timeline View Toggle -->
+    {% if achievements|length > 3 %}
+    <div class="row mt-4">
+        <div class="col text-center">
+            <button class="btn btn-outline-secondary" onclick="toggleTimelineView()">
+                <i class="mdi mdi-timeline me-1"></i>Switch to Timeline View
+            </button>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% else %}
+    <!-- Empty State -->
+    <div class="row">
+        <div class="col text-center py-5">
+            <i class="mdi mdi-trophy-outline mdi-64px text-muted mb-3"></i>
+            <h3>No Achievements Yet</h3>
+            <p class="text-muted">Achievements and certifications will appear here once they are published.</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function toggleTimelineView() {
+    // Timeline view functionality can be implemented here
+    alert('Timeline view feature coming soon!');
+}
+</script>
+{% endblock %}

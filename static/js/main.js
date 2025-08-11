@@ -5,13 +5,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const anchors = document.querySelectorAll('a[href^="#"]');
     anchors.forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+            const href = this.getAttribute('href');
+            if (href && href !== '#') {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             }
         });
     });
@@ -69,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Copy to clipboard functionality
-    function copyToClipboard(text) {
+    window.copyToClipboard = function(text) {
         navigator.clipboard.writeText(text).then(() => {
             // Show success message
             const toast = document.createElement('div');
