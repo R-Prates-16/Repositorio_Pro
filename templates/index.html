@@ -4,27 +4,142 @@
 
 {% block content %}
 <!-- Hero Section -->
-<div class="hero-section">
+<section class="hero-section">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6">
-                <h1 class="display-4 fw-bold mb-4">Welcome to My Digital Portfolio</h1>
-                <p class="lead mb-4">Discover my latest projects, achievements, and creative journey in technology.</p>
-                <div class="d-flex gap-3">
+            <div class="col-lg-8 hero-content fade-in">
+                <div class="hero-badge mb-4">
+                    <span class="badge bg-primary px-3 py-2">
+                        <i class="mdi mdi-rocket-launch me-2"></i>Professional Developer
+                    </span>
+                </div>
+                <h1 class="hero-title">
+                    Building <span class="text-gradient">Innovative</span><br>
+                    Digital Solutions
+                </h1>
+                <p class="hero-subtitle">
+                    Crafting cutting-edge applications with modern technologies. 
+                    Specialized in full-stack development, system architecture, and delivering 
+                    scalable solutions that drive business growth.
+                </p>
+                <div class="hero-buttons">
                     <a href="{{ url_for('public.projects') }}" class="btn btn-primary btn-lg">
-                        <i class="mdi mdi-folder-multiple me-2"></i>View Projects
+                        <i class="mdi mdi-folder-multiple-outline me-2"></i>Explore Projects
                     </a>
-                    <a href="{{ url_for('public.about') }}" class="btn btn-outline-secondary btn-lg">
-                        <i class="mdi mdi-account me-2"></i>About Me
+                    <a href="{{ url_for('public.contact') }}" class="btn btn-outline-primary btn-lg">
+                        <i class="mdi mdi-email-outline me-2"></i>Get In Touch
                     </a>
                 </div>
+                
+                <!-- Tech Stack Preview -->
+                <div class="mt-5">
+                    <p class="text-muted mb-3 code-font">// Technologies I work with:</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="tech-badge badge">Python</span>
+                        <span class="tech-badge badge">JavaScript</span>
+                        <span class="tech-badge badge">React</span>
+                        <span class="tech-badge badge">Node.js</span>
+                        <span class="tech-badge badge">PostgreSQL</span>
+                        <span class="tech-badge badge">Docker</span>
+                        <span class="tech-badge badge">AWS</span>
+                        <span class="tech-badge badge">Flask</span>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-6 text-center">
-                <i class="mdi mdi-code-braces display-1 text-primary"></i>
+            <div class="col-lg-4 text-center">
+                <div class="hero-visual position-relative">
+                    <!-- Tech Icons Animation -->
+                    <div class="d-flex justify-content-center align-items-center" style="height: 400px;">
+                        <div class="position-relative">
+                            <i class="mdi mdi-hexagon-multiple mdi-128px text-gradient"></i>
+                            <div class="position-absolute top-50 start-50 translate-middle">
+                                <i class="mdi mdi-code-braces mdi-48px" style="color: var(--accent-cyan);"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- Technical Stats Section -->
+<section class="py-5" style="background: var(--surface-bg);">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stats-card text-center">
+                    <span class="stats-counter" data-target="{{ project_count or 12 }}">0</span>
+                    <div class="stats-label">Projects Completed</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stats-card text-center">
+                    <span class="stats-counter" data-target="{{ achievement_count or 8 }}">0</span>
+                    <div class="stats-label">Certifications</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stats-card text-center">
+                    <span class="stats-counter code-font" data-target="99">0</span>
+                    <span class="stats-counter">%</span>
+                    <div class="stats-label">Code Quality</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stats-card text-center">
+                    <span class="stats-counter" data-target="24">0</span>
+                    <span class="stats-counter">/7</span>
+                    <div class="stats-label">Support Availability</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Technical Features Section -->
+<section class="py-5 grid-bg">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col text-center">
+                <h2 class="fw-bold mb-3">Technical Expertise</h2>
+                <p class="lead text-muted max-width-600 mx-auto">
+                    Delivering robust solutions with modern development practices and cutting-edge technologies
+                </p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card text-center">
+                    <div class="feature-icon mx-auto">
+                        <i class="mdi mdi-code-braces mdi-24px text-white"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Full-Stack Development</h5>
+                    <p class="text-muted">End-to-end application development using modern frameworks and best practices for scalable solutions.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card text-center">
+                    <div class="feature-icon mx-auto">
+                        <i class="mdi mdi-cloud-outline mdi-24px text-white"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Cloud Architecture</h5>
+                    <p class="text-muted">Designing and deploying cloud-native applications with microservices architecture and DevOps practices.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card text-center">
+                    <div class="feature-icon mx-auto">
+                        <i class="mdi mdi-database mdi-24px text-white"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Database Design</h5>
+                    <p class="text-muted">Optimized database schemas and queries for high-performance data storage and retrieval systems.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <div class="container py-5">
     <!-- Featured Projects -->
@@ -195,4 +310,87 @@
         </div>
     </section>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Counter Animation
+function animateCounters() {
+    const counters = document.querySelectorAll('.stats-counter[data-target]');
+    
+    counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const duration = 2000; // 2 seconds
+        const step = target / (duration / 16); // 60 FPS
+        let current = 0;
+        
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                counter.textContent = target;
+                clearInterval(timer);
+            } else {
+                counter.textContent = Math.floor(current);
+            }
+        }, 16);
+    });
+}
+
+// Intersection Observer for scroll animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('fade-in');
+            
+            // Animate counters when stats section is visible
+            if (entry.target.querySelector('.stats-counter')) {
+                animateCounters();
+            }
+        }
+    });
+}, observerOptions);
+
+// Initialize animations on page load
+document.addEventListener('DOMContentLoaded', () => {
+    // Observe feature cards
+    document.querySelectorAll('.feature-card').forEach(card => {
+        observer.observe(card);
+    });
+    
+    // Observe stats section
+    document.querySelectorAll('.stats-card').forEach(card => {
+        observer.observe(card.parentElement);
+    });
+    
+    // Observe project cards
+    document.querySelectorAll('.project-card').forEach(card => {
+        observer.observe(card);
+    });
+    
+    // Tech badge hover effects
+    document.querySelectorAll('.tech-badge').forEach(badge => {
+        badge.addEventListener('mouseenter', () => {
+            badge.style.transform = 'translateY(-2px) scale(1.05)';
+        });
+        
+        badge.addEventListener('mouseleave', () => {
+            badge.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+    
+    // Hero content animation
+    setTimeout(() => {
+        const heroContent = document.querySelector('.hero-content');
+        if (heroContent) {
+            heroContent.style.transition = 'all 1s ease';
+            heroContent.classList.add('fade-in');
+        }
+    }, 200);
+});
+</script>
 {% endblock %}

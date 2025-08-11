@@ -71,24 +71,57 @@ document.addEventListener('DOMContentLoaded', function() {
         element.textContent = currentYear;
     });
     
-    // Copy to clipboard functionality
+    // Copy to clipboard functionality - Global function
     window.copyToClipboard = function(text) {
+        if (!text) return;
+        
         navigator.clipboard.writeText(text).then(() => {
-            // Show success message
-            const toast = document.createElement('div');
-            toast.className = 'toast-container position-fixed top-0 end-0 p-3';
-            toast.innerHTML = `
-                <div class="toast show" role="alert">
-                    <div class="toast-body">
-                        <i class="mdi mdi-check-circle text-success me-2"></i>
-                        Copied to clipboard!
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
+            showToast('Copied to clipboard!', 'success');
+        }).catch(() => {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showToast('Copied to clipboard!', 'success');
         });
+    };
+    
+    // Toast notification system
+    function showToast(message, type = 'info', duration = 3000) {
+        const toast = document.createElement('div');
+        toast.className = 'position-fixed top-0 end-0 p-3';
+        toast.style.zIndex = '1056';
+        
+        const icon = type === 'success' ? 'check-circle' : 
+                     type === 'error' ? 'alert-circle' : 
+                     type === 'warning' ? 'alert' : 'information';
+        
+        const bgClass = type === 'success' ? 'bg-success' :
+                        type === 'error' ? 'bg-danger' :
+                        type === 'warning' ? 'bg-warning' : 'bg-info';
+        
+        toast.innerHTML = `
+            <div class="toast show" role="alert">
+                <div class="toast-body ${bgClass} text-white rounded">
+                    <i class="mdi mdi-${icon} me-2"></i>
+                    ${message}
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.transition = 'opacity 0.3s ease';
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, duration);
     }
+    
+    // Make showToast globally available
+    window.showToast = showToast;
     
     // Initialize tooltips
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
