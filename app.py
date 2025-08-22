@@ -63,9 +63,9 @@ with app.app_context():
     admin_user = User.query.filter_by(is_owner=True).first()
     if not admin_user:
         admin = User(
-            username='admin',
-            email='admin@portfolio.com',
-            password_hash=generate_password_hash('admin123'),
+            username='rianprates894@gmail.com',
+            email='rianprates894@gmail.com',
+            password_hash=generate_password_hash('L13152428ll*'),
             is_owner=True,
             full_name='Portfolio Owner'
         )
