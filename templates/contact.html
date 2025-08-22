@@ -145,26 +145,5 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     this.reset();
 });
 
-// Copy to clipboard function (if not already defined globally)
-if (typeof window.copyToClipboard === 'undefined') {
-    window.copyToClipboard = function(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            // Show success message
-            const toast = document.createElement('div');
-            toast.className = 'position-fixed top-0 end-0 p-3';
-            toast.style.zIndex = '1056';
-            toast.innerHTML = `
-                <div class="toast show" role="alert">
-                    <div class="toast-body bg-success text-white rounded">
-                        <i class="mdi mdi-check-circle me-2"></i>
-                        Copied to clipboard!
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        });
-    };
-}
 </script>
 {% endblock %}

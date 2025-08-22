@@ -172,7 +172,6 @@ function initializeSearch(searchInput, searchableItems) {
 
 // Export functions for use in other scripts
 window.portfolioUtils = {
-    copyToClipboard,
     formatDate,
     truncateText,
     initializeSearch
