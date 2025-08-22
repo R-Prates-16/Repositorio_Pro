@@ -75,6 +75,8 @@ def profile():
     if form.validate_on_submit():
         current_user.full_name = form.full_name.data
         current_user.bio = form.bio.data
+        current_user.linkedin_url = form.linkedin_url.data
+        current_user.github_url = form.github_url.data
         
         if form.profile_image.data:
             image_path = save_uploaded_file(form.profile_image.data)
@@ -88,5 +90,7 @@ def profile():
     # Pre-populate form with current user data
     form.full_name.data = current_user.full_name
     form.bio.data = current_user.bio
+    form.linkedin_url.data = current_user.linkedin_url
+    form.github_url.data = current_user.github_url
     
     return render_template('auth/profile.html', form=form)

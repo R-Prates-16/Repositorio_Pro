@@ -71,4 +71,4 @@ with app.app_context():
         )
         db.session.add(admin)
         db.session.commit()
-        print("Admin user created: admin / admin123")
+        print("Admin user created successfully")

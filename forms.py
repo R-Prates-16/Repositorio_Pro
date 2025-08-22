@@ -18,6 +18,8 @@ class RegisterForm(FlaskForm):
 class ProfileForm(FlaskForm):
     full_name = StringField('Full Name', validators=[DataRequired(), Length(min=2, max=100)])
     bio = TextAreaField('Bio', validators=[Optional(), Length(max=500)])
+    linkedin_url = StringField('LinkedIn URL', validators=[Optional(), URL()])
+    github_url = StringField('GitHub URL', validators=[Optional(), URL()])
     profile_image = FileField('Profile Image', validators=[FileAllowed(['jpg', 'png', 'gif'])])
 
 class ProjectForm(FlaskForm):

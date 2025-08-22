@@ -11,6 +11,8 @@ class User(UserMixin, db.Model):
     full_name = db.Column(db.String(100))
     bio = db.Column(Text)
     profile_image = db.Column(db.String(200))
+    linkedin_url = db.Column(db.String(300))
+    github_url = db.Column(db.String(300))
     is_owner = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     

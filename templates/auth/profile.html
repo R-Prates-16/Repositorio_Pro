@@ -62,6 +62,36 @@
                                 </div>
                                 
                                 <div class="mb-3">
+                                    {{ form.linkedin_url.label(class="form-label") }}
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="mdi mdi-linkedin"></i>
+                                        </span>
+                                        {{ form.linkedin_url(class="form-control", placeholder="https://linkedin.com/in/your-profile") }}
+                                    </div>
+                                    {% if form.linkedin_url.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.linkedin_url.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    {{ form.github_url.label(class="form-label") }}
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="mdi mdi-github"></i>
+                                        </span>
+                                        {{ form.github_url(class="form-control", placeholder="https://github.com/your-username") }}
+                                    </div>
+                                    {% if form.github_url.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.github_url.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-3">
                                     {{ form.profile_image.label(class="form-label") }}
                                     {{ form.profile_image(class="form-control") }}
                                     {% if form.profile_image.errors %}
