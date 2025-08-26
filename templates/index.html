@@ -32,20 +32,14 @@
                 </div>
                 
                 <!-- Social Links -->
-                {% if owner and (owner.linkedin_url or owner.github_url) %}
                 <div class="d-flex justify-content-center gap-3 mt-4">
-                    {% if owner.linkedin_url %}
-                    <a href="{{ owner.linkedin_url }}" target="_blank" class="btn btn-sm btn-outline-info">
+                    <a href="https://www.linkedin.com/in/rian-prates-3184722b1/" target="_blank" class="btn btn-sm btn-outline-info">
                         <i class="mdi mdi-linkedin me-1"></i>LinkedIn
                     </a>
-                    {% endif %}
-                    {% if owner.github_url %}
-                    <a href="{{ owner.github_url }}" target="_blank" class="btn btn-sm btn-outline-light">
+                    <a href="https://github.com/R-Prates-16?tab=repositories" target="_blank" class="btn btn-sm btn-outline-light">
                         <i class="mdi mdi-github me-1"></i>GitHub
                     </a>
-                    {% endif %}
                 </div>
-                {% endif %}
                 
                 <!-- Tech Stack Preview -->
                 <div class="mt-5">
