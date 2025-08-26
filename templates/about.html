@@ -10,6 +10,22 @@
             <div class="text-center mb-5">
                 <h1 class="fw-bold">About Me</h1>
                 <p class="lead text-muted">Get to know the person behind the portfolio</p>
+                
+                <!-- Social Links -->
+                {% if owner and (owner.linkedin_url or owner.github_url) %}
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    {% if owner.linkedin_url %}
+                    <a href="{{ owner.linkedin_url }}" target="_blank" class="btn btn-outline-primary">
+                        <i class="mdi mdi-linkedin me-2"></i>LinkedIn
+                    </a>
+                    {% endif %}
+                    {% if owner.github_url %}
+                    <a href="{{ owner.github_url }}" target="_blank" class="btn btn-outline-secondary">
+                        <i class="mdi mdi-github me-2"></i>GitHub
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
             </div>
             
             <!-- About Content -->

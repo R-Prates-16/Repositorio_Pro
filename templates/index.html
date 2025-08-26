@@ -31,6 +31,22 @@
                     </a>
                 </div>
                 
+                <!-- Social Links -->
+                {% if owner and (owner.linkedin_url or owner.github_url) %}
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    {% if owner.linkedin_url %}
+                    <a href="{{ owner.linkedin_url }}" target="_blank" class="btn btn-sm btn-outline-info">
+                        <i class="mdi mdi-linkedin me-1"></i>LinkedIn
+                    </a>
+                    {% endif %}
+                    {% if owner.github_url %}
+                    <a href="{{ owner.github_url }}" target="_blank" class="btn btn-sm btn-outline-light">
+                        <i class="mdi mdi-github me-1"></i>GitHub
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
                 <!-- Tech Stack Preview -->
                 <div class="mt-5">
                     <p class="text-muted mb-3 code-font">// Technologies I work with:</p>

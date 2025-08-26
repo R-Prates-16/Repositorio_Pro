@@ -20,11 +20,15 @@ def index():
     # Get recent achievements
     recent_achievements = Achievement.query.filter_by(is_published=True).order_by(Achievement.created_at.desc()).limit(3).all()
     
+    # Get owner for social links
+    owner = User.query.filter_by(is_owner=True).first()
+    
     return render_template('index.html',
                          featured_projects=featured_projects,
                          recent_projects=recent_projects,
                          popular_projects=popular_projects,
-                         recent_achievements=recent_achievements)
+                         recent_achievements=recent_achievements,
+                         owner=owner)
 
 @public_bp.route('/projects')
 def projects():
@@ -127,8 +131,9 @@ def achievements():
 def about():
     about_me = AboutMe.query.first()
     github_repos = GitHubRepo.query.filter_by(is_displayed=True).order_by(GitHubRepo.stars.desc()).all()
+    owner = User.query.filter_by(is_owner=True).first()
     
-    return render_template('about.html', about_me=about_me, github_repos=github_repos)
+    return render_template('about.html', about_me=about_me, github_repos=github_repos, owner=owner)
 
 @public_bp.route('/contact')
 def contact():
