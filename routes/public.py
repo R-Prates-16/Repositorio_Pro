@@ -72,29 +72,41 @@ def project_detail(id):
                          user_liked=user_liked)
 
 @public_bp.route('/project/<int:id>/like', methods=['POST'])
-@login_required
 def toggle_like(id):
+    if not current_user.is_authenticated:
+        return jsonify({
+            'success': False,
+            'error': 'login_required',
+            'message': 'Por favor, faça login para curtir.'
+        }), 401
+    
     project = Project.query.get_or_404(id)
     
-    like = Like.query.filter_by(user_id=current_user.id, project_id=project.id).first()
-    
-    if like:
-        # Unlike
-        db.session.delete(like)
-        liked = False
-    else:
-        # Like
-        like = Like(user_id=current_user.id, project_id=project.id)
-        db.session.add(like)
-        liked = True
-    
-    db.session.commit()
-    
-    return jsonify({
-        'success': True,
-        'liked': liked,
-        'like_count': project.like_count
-    })
+    try:
+        like = Like.query.filter_by(user_id=current_user.id, project_id=project.id).first()
+        
+        if like:
+            db.session.delete(like)
+            liked = False
+        else:
+            like = Like(user_id=current_user.id, project_id=project.id)
+            db.session.add(like)
+            liked = True
+        
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'liked': liked,
+            'like_count': project.like_count
+        })
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'success': False,
+            'error': 'server_error',
+            'message': 'Erro ao processar curtida.'
+        }), 500
 
 @public_bp.route('/project/<int:id>/comment', methods=['POST'])
 @login_required
