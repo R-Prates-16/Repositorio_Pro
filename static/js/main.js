@@ -176,3 +176,77 @@ window.portfolioUtils = {
     truncateText,
     initializeSearch
 };
+
+// Global Like Functionality
+function initializeLikeButtons() {
+    // Handle like buttons on project cards
+    const cardLikeBtns = document.querySelectorAll('.like-btn-card[data-project-id]');
+    cardLikeBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            handleLike(this);
+        });
+    });
+    
+    // Handle like button on project detail page
+    const detailLikeBtn = document.querySelector('.like-btn[data-project-id]');
+    if (detailLikeBtn) {
+        detailLikeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleLike(this);
+        });
+    }
+}
+
+function handleLike(button) {
+    const projectId = button.dataset.projectId;
+    
+    fetch(`/project/${projectId}/like`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            button.classList.toggle('liked', data.liked);
+            const countEl = button.querySelector('.like-count');
+            if (countEl) {
+                countEl.textContent = data.like_count;
+            }
+            // Update all like counts on the page for this project
+            document.querySelectorAll('.like-count').forEach(el => {
+                if (el.closest('[data-project-id="' + projectId + '"]')) {
+                    el.textContent = data.like_count;
+                }
+            });
+            if (window.showToast) {
+                window.showToast(data.liked ? 'Projeto curtido!' : 'Curtida removida', 'success');
+            }
+        } else {
+            if (data.error === 'login_required') {
+                if (window.showToast) {
+                    window.showToast('Por favor, faça login para curtir.', 'error');
+                } else {
+                    alert('Por favor, faça login para curtir.');
+                }
+            } else {
+                if (window.showToast) {
+                    window.showToast(data.message || 'Erro ao processar curtida.', 'error');
+                }
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Like error:', error);
+        if (window.showToast) {
+            window.showToast('Erro ao processar curtida. Tente novamente.', 'error');
+        }
+    });
+}
+
+// Initialize like buttons when DOM is ready
+document.addEventListener('DOMContentLoaded', initializeLikeButtons);
