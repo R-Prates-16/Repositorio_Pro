@@ -70,7 +70,7 @@ def register():
             return redirect(url_for('public.index'))
         except Exception as e:
             db.session.rollback()
-            logger.error(f"Erro ao cadastrar usuário: {str(e)}")
+            logger.exception(f"Erro ao cadastrar usuário: {str(e)}")
             flash('Erro ao criar conta. Por favor, tente novamente.', 'error')
             return render_template('auth/register.html', form=form)
     

@@ -8,6 +8,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 class Base(DeclarativeBase):
     pass
@@ -19,8 +20,17 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key-change-in-production")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
-# Configure the database
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///portfolio.db")
+# Ensure instance folder exists for SQLite fallback
+os.makedirs(app.instance_path, exist_ok=True)
+
+# Configure the database - use absolute path for SQLite fallback
+database_url = os.environ.get("DATABASE_URL")
+if not database_url:
+    sqlite_path = os.path.join(app.instance_path, 'portfolio.db')
+    database_url = f"sqlite:///{sqlite_path}"
+    logger.info(f"Using SQLite database at: {sqlite_path}")
+
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_recycle": 300,
     "pool_pre_ping": True,
