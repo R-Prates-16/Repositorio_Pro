@@ -702,6 +702,46 @@ h2 { font-size: 2rem; }
     border: 3px solid var(--dark-bg);
 }
 
+/* Like Button Styles */
+.like-btn {
+    background: var(--surface-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.like-btn:hover {
+    border-color: var(--danger-red);
+    color: var(--danger-red);
+    transform: scale(1.05);
+}
+
+.like-btn.liked {
+    background: var(--danger-red);
+    border-color: var(--danger-red);
+    color: white;
+}
+
+.like-btn.liked:hover {
+    background: #cc3636;
+    border-color: #cc3636;
+    color: white;
+}
+
+.like-btn i {
+    font-size: 1.2rem;
+}
+
+.like-btn .like-count {
+    font-weight: 600;
+}
+
 /* Print styles */
 @media print {
     .navbar,
