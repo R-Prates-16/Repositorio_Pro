@@ -27,6 +27,15 @@ def save_uploaded_file(file):
 def fetch_github_repos(username):
     """Fetch GitHub repositories for a user"""
     try:
+        # Extract username from URL if full URL is provided
+        username = username.strip()
+        if 'github.com/' in username:
+            # Handle URLs like https://github.com/username or github.com/username
+            username = username.rstrip('/').split('github.com/')[-1].split('/')[0]
+        
+        if not username:
+            return False, "Nome de usuário inválido."
+        
         github_token = os.environ.get("GITHUB_TOKEN", "")
         headers = {
             'Accept': 'application/vnd.github.v3+json',
