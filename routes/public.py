@@ -49,7 +49,13 @@ def projects():
     categories = db.session.query(Project.category).filter_by(is_published=True).distinct().all()
     categories = [cat[0] for cat in categories if cat[0]]
     
-    return render_template('projects.html', projects=projects, categories=categories, selected_category=category)
+    # Get liked project IDs for current user
+    liked_project_ids = set()
+    if current_user.is_authenticated:
+        user_likes = Like.query.filter_by(user_id=current_user.id).all()
+        liked_project_ids = {like.project_id for like in user_likes}
+    
+    return render_template('projects.html', projects=projects, categories=categories, selected_category=category, liked_project_ids=liked_project_ids)
 
 @public_bp.route('/project/<int:id>')
 def project_detail(id):

@@ -86,10 +86,23 @@
                                 </a>
                                 {% endif %}
                             </div>
-                            <small class="text-muted">
-                                <i class="mdi mdi-heart me-1"></i>{{ project.like_count }}
-                                <i class="mdi mdi-comment ms-2 me-1"></i>{{ project.comment_count }}
-                            </small>
+                            <div class="d-flex align-items-center gap-2">
+                                {% if current_user.is_authenticated %}
+                                <button class="like-btn-card btn btn-sm {{ 'liked' if project.id in liked_project_ids else '' }}" 
+                                        data-project-id="{{ project.id }}"
+                                        title="Curtir">
+                                    <i class="mdi mdi-heart"></i>
+                                    <span class="like-count">{{ project.like_count }}</span>
+                                </button>
+                                {% else %}
+                                <span class="text-muted small">
+                                    <i class="mdi mdi-heart me-1"></i><span class="like-count-{{ project.id }}">{{ project.like_count }}</span>
+                                </span>
+                                {% endif %}
+                                <span class="text-muted small">
+                                    <i class="mdi mdi-comment me-1"></i>{{ project.comment_count }}
+                                </span>
+                            </div>
                         </div>
                         <small class="text-muted d-block mt-2">
                             <i class="mdi mdi-calendar me-1"></i>{{ project.created_at.strftime('%B %Y') }}
@@ -121,4 +134,45 @@
     </div>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const likeBtns = document.querySelectorAll('.like-btn-card[data-project-id]');
+    likeBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const projectId = this.dataset.projectId;
+            const button = this;
+            
+            fetch(`/project/${projectId}/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    button.classList.toggle('liked', data.liked);
+                    button.querySelector('.like-count').textContent = data.like_count;
+                    window.showToast(data.liked ? 'Projeto curtido!' : 'Curtida removida', 'success');
+                } else {
+                    if (data.error === 'login_required') {
+                        window.showToast('Por favor, faça login para curtir.', 'error');
+                    } else {
+                        window.showToast(data.message || 'Erro ao processar curtida.', 'error');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                window.showToast('Erro ao processar curtida. Tente novamente.', 'error');
+            });
+        });
+    });
+});
+</script>
 {% endblock %}

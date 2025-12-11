@@ -742,6 +742,38 @@ h2 { font-size: 2rem; }
     font-weight: 600;
 }
 
+/* Like Button Card Styles */
+.like-btn-card {
+    background: var(--surface-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+}
+
+.like-btn-card:hover {
+    border-color: var(--danger-red);
+    color: var(--danger-red);
+    background: var(--surface-bg);
+}
+
+.like-btn-card.liked {
+    background: var(--danger-red);
+    border-color: var(--danger-red);
+    color: white;
+}
+
+.like-btn-card.liked:hover {
+    background: #cc3636;
+    border-color: #cc3636;
+    color: white;
+}
+
 /* Print styles */
 @media print {
     .navbar,
