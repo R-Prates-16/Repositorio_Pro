@@ -52,11 +52,14 @@ def register():
                 flash('Senha é obrigatória', 'error')
                 return render_template('auth/register.html', form=form)
             
+            password_hash = generate_password_hash(password)
+            logger.debug(f"Generated password hash length: {len(password_hash)}")
+            
             user = User(
                 username=form.username.data,
                 email=form.email.data,
                 full_name=form.full_name.data,
-                password_hash=generate_password_hash(password)
+                password_hash=password_hash
             )
             
             db.session.add(user)
