@@ -101,10 +101,12 @@ def toggle_like(id):
         
         db.session.commit()
         
+        like_count = db.session.query(db.func.count(Like.id)).filter(Like.project_id == project.id).scalar()
+        
         return jsonify({
             'success': True,
             'liked': liked,
-            'like_count': project.like_count
+            'like_count': like_count
         })
     except Exception as e:
         db.session.rollback()
