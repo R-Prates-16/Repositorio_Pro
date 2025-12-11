@@ -37,28 +37,39 @@ def register():
     
     form = RegisterForm()
     if form.validate_on_submit():
-        # Check if username or email already exists
-        if User.query.filter_by(username=form.username.data).first():
-            flash('Nome de usuário já existe', 'error')
+        try:
+            # Check if username or email already exists
+            if User.query.filter_by(username=form.username.data).first():
+                flash('Nome de usuário já existe', 'error')
+                return render_template('auth/register.html', form=form)
+            
+            if User.query.filter_by(email=form.email.data).first():
+                flash('Email já cadastrado', 'error')
+                return render_template('auth/register.html', form=form)
+            
+            password = form.password.data
+            if not password:
+                flash('Senha é obrigatória', 'error')
+                return render_template('auth/register.html', form=form)
+            
+            user = User(
+                username=form.username.data,
+                email=form.email.data,
+                full_name=form.full_name.data,
+                password_hash=generate_password_hash(password)
+            )
+            
+            db.session.add(user)
+            db.session.commit()
+            
+            login_user(user)
+            flash('Cadastro realizado com sucesso! Bem-vindo ao portfólio.', 'success')
+            return redirect(url_for('public.index'))
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f"Erro ao cadastrar usuário: {str(e)}")
+            flash('Erro ao criar conta. Por favor, tente novamente.', 'error')
             return render_template('auth/register.html', form=form)
-        
-        if User.query.filter_by(email=form.email.data).first():
-            flash('Email já cadastrado', 'error')
-            return render_template('auth/register.html', form=form)
-        
-        user = User(
-            username=form.username.data,
-            email=form.email.data,
-            full_name=form.full_name.data,
-            password_hash=generate_password_hash(form.password.data)
-        )
-        
-        db.session.add(user)
-        db.session.commit()
-        
-        login_user(user)
-        flash('Cadastro realizado com sucesso! Bem-vindo ao portfólio.', 'success')
-        return redirect(url_for('public.index'))
     
     return render_template('auth/register.html', form=form)
 
