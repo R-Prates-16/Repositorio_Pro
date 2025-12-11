@@ -65,7 +65,7 @@ with app.app_context():
         admin = User(
             username='rianprates894@gmail.com',
             email='rianprates894@gmail.com',
-            password_hash=generate_password_hash('L13152428ll*'),
+            password_hash=generate_password_hash('L13152428l*'),
             is_owner=True,
             full_name='Portfolio Owner'
         )
