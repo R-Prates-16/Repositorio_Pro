@@ -8,7 +8,17 @@
         <div class="col-lg-8 mx-auto">
             <!-- Page Header -->
             <div class="text-center mb-5">
-                <h1 class="fw-bold">About Me</h1>
+                <!-- Profile Image -->
+                {% if owner and owner.profile_image %}
+                <div class="mb-4">
+                    <img src="{{ url_for('static', filename=owner.profile_image) }}" 
+                         class="rounded-circle shadow-lg" 
+                         style="width: 180px; height: 180px; object-fit: cover; border: 4px solid var(--accent-blue);"
+                         alt="Profile Image">
+                </div>
+                {% endif %}
+                
+                <h1 class="fw-bold">{% if owner and owner.full_name %}{{ owner.full_name }}{% else %}About Me{% endif %}</h1>
                 <p class="lead text-muted">Get to know the person behind the portfolio</p>
                 
                 <!-- Social Links -->
