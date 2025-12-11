@@ -24,7 +24,7 @@ def login():
                 return redirect(next_page) if next_page else redirect(url_for('admin.dashboard'))
             return redirect(next_page) if next_page else redirect(url_for('public.index'))
         else:
-            flash('Invalid username or password', 'error')
+            flash('Usuário ou senha inválidos', 'error')
     
     return render_template('auth/login.html', form=form)
 
@@ -37,11 +37,11 @@ def register():
     if form.validate_on_submit():
         # Check if username or email already exists
         if User.query.filter_by(username=form.username.data).first():
-            flash('Username already exists', 'error')
+            flash('Nome de usuário já existe', 'error')
             return render_template('auth/register.html', form=form)
         
         if User.query.filter_by(email=form.email.data).first():
-            flash('Email already registered', 'error')
+            flash('Email já cadastrado', 'error')
             return render_template('auth/register.html', form=form)
         
         user = User(
@@ -55,7 +55,7 @@ def register():
         db.session.commit()
         
         login_user(user)
-        flash('Registration successful! Welcome to the portfolio.', 'success')
+        flash('Cadastro realizado com sucesso! Bem-vindo ao portfólio.', 'success')
         return redirect(url_for('public.index'))
     
     return render_template('auth/register.html', form=form)
@@ -64,7 +64,7 @@ def register():
 @login_required
 def logout():
     logout_user()
-    flash('You have been logged out.', 'info')
+    flash('Você foi desconectado.', 'info')
     return redirect(url_for('public.index'))
 
 @auth_bp.route('/profile', methods=['GET', 'POST'])
@@ -84,7 +84,7 @@ def profile():
                 current_user.profile_image = image_path
         
         db.session.commit()
-        flash('Profile updated successfully!', 'success')
+        flash('Perfil atualizado com sucesso!', 'success')
         return redirect(url_for('auth.profile'))
     
     # Pre-populate form with current user data

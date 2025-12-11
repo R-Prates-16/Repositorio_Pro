@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Contact - Digital Portfolio{% endblock %}
+{% block title %}Contato - Portfólio Digital{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -8,8 +8,8 @@
         <div class="col-lg-8 mx-auto">
             <!-- Page Header -->
             <div class="text-center mb-5">
-                <h1 class="fw-bold">Get In Touch</h1>
-                <p class="lead text-muted">Let's discuss opportunities, collaborations, or just say hello!</p>
+                <h1 class="fw-bold">Entre em Contato</h1>
+                <p class="lead text-muted">Vamos conversar sobre oportunidades, colaborações ou apenas dizer olá!</p>
             </div>
             
             <!-- Contact Cards -->
@@ -22,7 +22,7 @@
                             {% if owner %}
                             <p class="card-text">{{ owner.email }}</p>
                             <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard('{{ owner.email }}')">
-                                <i class="mdi mdi-content-copy me-1"></i>Copy
+                                <i class="mdi mdi-content-copy me-1"></i>Copiar
                             </button>
                             {% else %}
                             <p class="card-text">admin@portfolio.com</p>
@@ -36,9 +36,9 @@
                         <div class="card-body">
                             <i class="mdi mdi-linkedin mdi-36px text-primary mb-3"></i>
                             <h5 class="card-title">LinkedIn</h5>
-                            <p class="card-text">Connect with me professionally</p>
+                            <p class="card-text">Conecte-se comigo profissionalmente</p>
                             <a href="{{ owner.linkedin_url if owner and owner.linkedin_url else '#' }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                                <i class="mdi mdi-open-in-new me-1"></i>Visit
+                                <i class="mdi mdi-open-in-new me-1"></i>Visitar
                             </a>
                         </div>
                     </div>
@@ -49,9 +49,9 @@
                         <div class="card-body">
                             <i class="mdi mdi-github mdi-36px text-primary mb-3"></i>
                             <h5 class="card-title">GitHub</h5>
-                            <p class="card-text">Check out my code</p>
+                            <p class="card-text">Confira meu código</p>
                             <a href="{{ owner.github_url if owner and owner.github_url else '#' }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                                <i class="mdi mdi-open-in-new me-1"></i>Visit
+                                <i class="mdi mdi-open-in-new me-1"></i>Visitar
                             </a>
                         </div>
                     </div>
@@ -61,13 +61,13 @@
             <!-- Contact Form -->
             <div class="card">
                 <div class="card-header">
-                    <h4 class="mb-0">Send a Message</h4>
+                    <h4 class="mb-0">Enviar uma Mensagem</h4>
                 </div>
                 <div class="card-body">
                     <form id="contactForm">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="name" class="form-label">Name</label>
+                                <label for="name" class="form-label">Nome</label>
                                 <input type="text" class="form-control" id="name" required>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -77,25 +77,25 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="subject" class="form-label">Subject</label>
+                            <label for="subject" class="form-label">Assunto</label>
                             <select class="form-select" id="subject" required>
-                                <option value="">Select a topic</option>
-                                <option value="collaboration">Collaboration Opportunity</option>
-                                <option value="job">Job Opportunity</option>
-                                <option value="project">Project Inquiry</option>
-                                <option value="general">General Question</option>
-                                <option value="other">Other</option>
+                                <option value="">Selecione um tópico</option>
+                                <option value="collaboration">Oportunidade de Colaboração</option>
+                                <option value="job">Oportunidade de Emprego</option>
+                                <option value="project">Consulta sobre Projeto</option>
+                                <option value="general">Pergunta Geral</option>
+                                <option value="other">Outro</option>
                             </select>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="message" class="form-label">Message</label>
+                            <label for="message" class="form-label">Mensagem</label>
                             <textarea class="form-control" id="message" rows="5" 
-                                    placeholder="Tell me about your project, idea, or question..." required></textarea>
+                                    placeholder="Conte-me sobre seu projeto, ideia ou pergunta..." required></textarea>
                         </div>
                         
                         <button type="submit" class="btn btn-primary">
-                            <i class="mdi mdi-send me-2"></i>Send Message
+                            <i class="mdi mdi-send me-2"></i>Enviar Mensagem
                         </button>
                     </form>
                 </div>
@@ -105,7 +105,7 @@
             <div class="text-center mt-5">
                 <p class="text-muted">
                     <i class="mdi mdi-clock me-1"></i>
-                    I typically respond within 24 hours
+                    Normalmente respondo em até 24 horas
                 </p>
             </div>
         </div>
@@ -125,7 +125,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     const message = document.getElementById('message').value;
     
     // Create mailto link
-    const mailtoLink = `mailto:admin@portfolio.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+    const mailtoLink = `mailto:admin@portfolio.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Nome: ${name}\nEmail: ${email}\n\nMensagem:\n${message}`)}`;
     
     // Open email client
     window.location.href = mailtoLink;
@@ -135,7 +135,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     alert.className = 'alert alert-success alert-dismissible fade show mt-3';
     alert.innerHTML = `
         <i class="mdi mdi-check-circle me-2"></i>
-        Email client opened! Your message has been prepared.
+        Cliente de email aberto! Sua mensagem foi preparada.
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     `;
     
@@ -145,5 +145,10 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     this.reset();
 });
 
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        alert('Email copiado para a área de transferência!');
+    });
+}
 </script>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}About Me - Digital Portfolio{% endblock %}
+{% block title %}Sobre Mim - Portfólio Digital{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -14,12 +14,12 @@
                     <img src="{{ url_for('static', filename=owner.profile_image) }}" 
                          class="rounded-circle shadow-lg" 
                          style="width: 180px; height: 180px; object-fit: cover; border: 4px solid var(--accent-blue);"
-                         alt="Profile Image">
+                         alt="Foto de Perfil">
                 </div>
                 {% endif %}
                 
-                <h1 class="fw-bold">{% if owner and owner.full_name %}{{ owner.full_name }}{% else %}About Me{% endif %}</h1>
-                <p class="lead text-muted">Get to know the person behind the portfolio</p>
+                <h1 class="fw-bold">{% if owner and owner.full_name %}{{ owner.full_name }}{% else %}Sobre Mim{% endif %}</h1>
+                <p class="lead text-muted">Conheça a pessoa por trás do portfólio</p>
                 
                 <!-- Social Links -->
                 {% if owner and (owner.linkedin_url or owner.github_url) %}
@@ -52,7 +52,7 @@
             {% if about_me.skills %}
             <div class="card mb-5">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">Skills & Technologies</h3>
+                    <h3 class="card-title mb-0">Habilidades e Tecnologias</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -75,7 +75,7 @@
             {% if about_me.experience %}
             <div class="card mb-5">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">Experience</h3>
+                    <h3 class="card-title mb-0">Experiência</h3>
                 </div>
                 <div class="card-body">
                     <div class="content">
@@ -89,7 +89,7 @@
             {% if about_me.education %}
             <div class="card mb-5">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">Education</h3>
+                    <h3 class="card-title mb-0">Educação</h3>
                 </div>
                 <div class="card-body">
                     <div class="content">
@@ -103,8 +103,8 @@
             <div class="card mb-5">
                 <div class="card-body text-center py-5">
                     <i class="mdi mdi-account-circle mdi-64px text-muted mb-3"></i>
-                    <h3>Welcome to My Portfolio</h3>
-                    <p class="text-muted">I'm passionate about technology and creating innovative solutions.</p>
+                    <h3>Bem-vindo ao Meu Portfólio</h3>
+                    <p class="text-muted">Sou apaixonado por tecnologia e por criar soluções inovadoras.</p>
                 </div>
             </div>
             {% endif %}
@@ -114,7 +114,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title mb-0">
-                        <i class="mdi mdi-github me-2"></i>GitHub Repositories
+                        <i class="mdi mdi-github me-2"></i>Repositórios GitHub
                     </h3>
                 </div>
                 <div class="card-body">

@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Projects - Digital Portfolio{% endblock %}
+{% block title %}Projetos - Portfólio Digital{% endblock %}
 
 {% block content %}
 <div class="container py-5">
     <!-- Page Header -->
     <div class="row mb-4">
         <div class="col">
-            <h1 class="fw-bold">Projects</h1>
-            <p class="text-muted">Explore my latest work and creative solutions</p>
+            <h1 class="fw-bold">Projetos</h1>
+            <p class="text-muted">Explore meus trabalhos mais recentes e soluções criativas</p>
         </div>
     </div>
     
@@ -17,10 +17,10 @@
     <div class="row mb-4">
         <div class="col">
             <div class="d-flex flex-wrap gap-2 align-items-center">
-                <span class="text-muted me-2">Filter by category:</span>
+                <span class="text-muted me-2">Filtrar por categoria:</span>
                 <a href="{{ url_for('public.projects') }}" 
                    class="btn btn-sm {{ 'btn-primary' if not selected_category else 'btn-outline-primary' }}">
-                    All
+                    Todos
                 </a>
                 {% for category in categories %}
                 <a href="{{ url_for('public.projects', category=category) }}" 
@@ -54,7 +54,7 @@
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <span class="badge bg-primary">{{ project.category|title }}</span>
                         {% if project.is_featured %}
-                        <i class="mdi mdi-star text-warning" title="Featured Project"></i>
+                        <i class="mdi mdi-star text-warning" title="Projeto em Destaque"></i>
                         {% endif %}
                     </div>
                     
@@ -77,7 +77,7 @@
                             <div class="btn-group" role="group">
                                 <a href="{{ url_for('public.project_detail', id=project.id) }}" 
                                    class="btn btn-sm btn-outline-primary">
-                                    <i class="mdi mdi-eye me-1"></i>View
+                                    <i class="mdi mdi-eye me-1"></i>Ver
                                 </a>
                                 {% if project.demo_url %}
                                 <a href="{{ project.demo_url }}" target="_blank" 
@@ -102,10 +102,10 @@
     </div>
     
     <!-- Pagination placeholder -->
-    {% if projects|length >= 9 %}
+    {% if projects|length >= 7 %}
     <div class="row">
         <div class="col text-center mt-4">
-            <p class="text-muted">Showing {{ projects|length }} projects</p>
+            <p class="text-muted">Exibindo {{ projects|length }} projetos</p>
         </div>
     </div>
     {% endif %}
@@ -115,8 +115,8 @@
     <div class="row">
         <div class="col text-center py-5">
             <i class="mdi mdi-folder-open-outline mdi-64px text-muted mb-3"></i>
-            <h3>No Projects Yet</h3>
-            <p class="text-muted">Projects will appear here once they are published.</p>
+            <h3>Nenhum Projeto Ainda</h3>
+            <p class="text-muted">Os projetos aparecerão aqui assim que forem publicados.</p>
         </div>
     </div>
     {% endif %}

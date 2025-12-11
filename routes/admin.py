@@ -13,7 +13,7 @@ def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated or not current_user.is_owner:
-            flash('Access denied. Admin privileges required.', 'error')
+            flash('Acesso negado. Privilégios de administrador necessários.', 'error')
             return redirect(url_for('public.index'))
         return f(*args, **kwargs)
     return decorated_function
@@ -70,7 +70,7 @@ def new_project():
         
         db.session.add(project)
         db.session.commit()
-        flash('Project created successfully!', 'success')
+        flash('Projeto criado com sucesso!', 'success')
         return redirect(url_for('admin.projects'))
     
     return render_template('admin/project_form.html', form=form, title='New Project')
@@ -99,7 +99,7 @@ def edit_project(id):
                 project.image_url = image_path
         
         db.session.commit()
-        flash('Project updated successfully!', 'success')
+        flash('Projeto atualizado com sucesso!', 'success')
         return redirect(url_for('admin.projects'))
     
     return render_template('admin/project_form.html', form=form, title='Edit Project')
@@ -111,7 +111,7 @@ def delete_project(id):
     project = Project.query.get_or_404(id)
     db.session.delete(project)
     db.session.commit()
-    flash('Project deleted successfully!', 'success')
+    flash('Projeto excluído com sucesso!', 'success')
     return redirect(url_for('admin.projects'))
 
 @admin_bp.route('/achievements')
@@ -143,7 +143,7 @@ def new_achievement():
         
         db.session.add(achievement)
         db.session.commit()
-        flash('Achievement created successfully!', 'success')
+        flash('Conquista criada com sucesso!', 'success')
         return redirect(url_for('admin.achievements'))
     
     return render_template('admin/achievement_form.html', form=form, title='New Achievement')
@@ -169,7 +169,7 @@ def edit_achievement(id):
                 achievement.image_url = image_path
         
         db.session.commit()
-        flash('Achievement updated successfully!', 'success')
+        flash('Conquista atualizada com sucesso!', 'success')
         return redirect(url_for('admin.achievements'))
     
     return render_template('admin/achievement_form.html', form=form, title='Edit Achievement')
@@ -181,7 +181,7 @@ def delete_achievement(id):
     achievement = Achievement.query.get_or_404(id)
     db.session.delete(achievement)
     db.session.commit()
-    flash('Achievement deleted successfully!', 'success')
+    flash('Conquista excluída com sucesso!', 'success')
     return redirect(url_for('admin.achievements'))
 
 @admin_bp.route('/settings', methods=['GET', 'POST'])
@@ -207,7 +207,7 @@ def settings():
             db.session.add(about_me)
         
         db.session.commit()
-        flash('Settings updated successfully!', 'success')
+        flash('Configurações atualizadas com sucesso!', 'success')
         return redirect(url_for('admin.settings'))
     
     if about_me:
@@ -226,7 +226,7 @@ def settings():
 def sync_github():
     github_username = request.form.get('github_username')
     if not github_username:
-        flash('Please provide a GitHub username', 'error')
+        flash('Por favor, forneça um nome de usuário do GitHub', 'error')
         return redirect(url_for('admin.settings'))
     
     success, message = fetch_github_repos(github_username)

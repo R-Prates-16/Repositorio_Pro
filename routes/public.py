@@ -23,12 +23,17 @@ def index():
     # Get owner for social links
     owner = User.query.filter_by(is_owner=True).first()
     
+    project_count = Project.query.filter_by(is_published=True).count()
+    achievement_count = Achievement.query.filter_by(is_published=True).count()
+    
     return render_template('index.html',
                          featured_projects=featured_projects,
                          recent_projects=recent_projects,
                          popular_projects=popular_projects,
                          recent_achievements=recent_achievements,
-                         owner=owner)
+                         owner=owner,
+                         project_count=project_count if project_count > 0 else 7,
+                         achievement_count=achievement_count if achievement_count > 0 else 8)
 
 @public_bp.route('/projects')
 def projects():
@@ -105,9 +110,9 @@ def add_comment(id):
         )
         db.session.add(comment)
         db.session.commit()
-        flash('Comment added successfully!', 'success')
+        flash('Comentário adicionado com sucesso!', 'success')
     else:
-        flash('Error adding comment. Please try again.', 'error')
+        flash('Erro ao adicionar comentário. Por favor, tente novamente.', 'error')
     
     return redirect(url_for('public.project_detail', id=id))
 

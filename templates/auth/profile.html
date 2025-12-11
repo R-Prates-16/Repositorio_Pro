@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Profile - Digital Portfolio{% endblock %}
+{% block title %}Perfil - Portfólio Digital{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="mb-0">
-                        <i class="mdi mdi-account-circle me-2"></i>My Profile
+                        <i class="mdi mdi-account-circle me-2"></i>Meu Perfil
                     </h3>
                 </div>
                 <div class="card-body">
@@ -20,7 +20,7 @@
                                     <img src="{{ url_for('static', filename=current_user.profile_image) }}" 
                                          class="rounded-circle" 
                                          width="120" height="120" 
-                                         alt="Profile Image">
+                                         alt="Foto de Perfil">
                                 {% else %}
                                     <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center" 
                                          style="width: 120px; height: 120px;">
@@ -31,9 +31,9 @@
                             <h5>{{ current_user.full_name or current_user.username }}</h5>
                             <p class="text-muted">{{ current_user.email }}</p>
                             {% if current_user.is_owner %}
-                                <span class="badge bg-primary">Portfolio Owner</span>
+                                <span class="badge bg-primary">Proprietário do Portfólio</span>
                             {% else %}
-                                <span class="badge bg-secondary">Community Member</span>
+                                <span class="badge bg-secondary">Membro da Comunidade</span>
                             {% endif %}
                         </div>
                         
@@ -42,7 +42,7 @@
                                 {{ form.hidden_tag() }}
                                 
                                 <div class="mb-3">
-                                    {{ form.full_name.label(class="form-label") }}
+                                    <label for="full_name" class="form-label">Nome Completo</label>
                                     {{ form.full_name(class="form-control") }}
                                     {% if form.full_name.errors %}
                                         <div class="text-danger small">
@@ -52,8 +52,8 @@
                                 </div>
                                 
                                 <div class="mb-3">
-                                    {{ form.bio.label(class="form-label") }}
-                                    {{ form.bio(class="form-control", rows="4", placeholder="Tell us about yourself...") }}
+                                    <label for="bio" class="form-label">Biografia</label>
+                                    {{ form.bio(class="form-control", rows="4", placeholder="Conte um pouco sobre você...") }}
                                     {% if form.bio.errors %}
                                         <div class="text-danger small">
                                             {% for error in form.bio.errors %}{{ error }}{% endfor %}
@@ -62,12 +62,12 @@
                                 </div>
                                 
                                 <div class="mb-3">
-                                    {{ form.linkedin_url.label(class="form-label") }}
+                                    <label for="linkedin_url" class="form-label">URL do LinkedIn</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="mdi mdi-linkedin"></i>
                                         </span>
-                                        {{ form.linkedin_url(class="form-control", placeholder="https://linkedin.com/in/your-profile") }}
+                                        {{ form.linkedin_url(class="form-control", placeholder="https://linkedin.com/in/seu-perfil") }}
                                     </div>
                                     {% if form.linkedin_url.errors %}
                                         <div class="text-danger small">
@@ -77,12 +77,12 @@
                                 </div>
                                 
                                 <div class="mb-3">
-                                    {{ form.github_url.label(class="form-label") }}
+                                    <label for="github_url" class="form-label">URL do GitHub</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="mdi mdi-github"></i>
                                         </span>
-                                        {{ form.github_url(class="form-control", placeholder="https://github.com/your-username") }}
+                                        {{ form.github_url(class="form-control", placeholder="https://github.com/seu-usuario") }}
                                     </div>
                                     {% if form.github_url.errors %}
                                         <div class="text-danger small">
@@ -92,18 +92,18 @@
                                 </div>
                                 
                                 <div class="mb-3">
-                                    {{ form.profile_image.label(class="form-label") }}
+                                    <label for="profile_image" class="form-label">Foto de Perfil</label>
                                     {{ form.profile_image(class="form-control") }}
                                     {% if form.profile_image.errors %}
                                         <div class="text-danger small">
                                             {% for error in form.profile_image.errors %}{{ error }}{% endfor %}
                                         </div>
                                     {% endif %}
-                                    <small class="text-muted">Supported formats: JPG, PNG, GIF (max 16MB)</small>
+                                    <small class="text-muted">Formatos suportados: JPG, PNG, GIF (máx 16MB)</small>
                                 </div>
                                 
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="mdi mdi-content-save me-2"></i>Update Profile
+                                    <i class="mdi mdi-content-save me-2"></i>Atualizar Perfil
                                 </button>
                             </form>
                         </div>
@@ -114,19 +114,19 @@
             <!-- User Stats -->
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="mb-0">Account Information</h5>
+                    <h5 class="mb-0">Informações da Conta</h5>
                 </div>
                 <div class="card-body">
                     <div class="row text-center">
                         <div class="col-md-6">
                             <div class="border-end">
                                 <h4 class="fw-bold text-primary">{{ current_user.created_at.strftime('%B %Y') }}</h4>
-                                <small class="text-muted">Member Since</small>
+                                <small class="text-muted">Membro Desde</small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <h4 class="fw-bold text-success">{{ current_user.comments|length }}</h4>
-                            <small class="text-muted">Comments Made</small>
+                            <small class="text-muted">Comentários Feitos</small>
                         </div>
                     </div>
                 </div>

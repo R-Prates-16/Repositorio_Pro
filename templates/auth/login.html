@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Login - Digital Portfolio{% endblock %}
+{% block title %}Entrar - Portfólio Digital{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -8,16 +8,16 @@
         <div class="col-md-6 col-lg-4">
             <div class="card">
                 <div class="card-header text-center">
-                    <h3 class="mb-0">Login</h3>
-                    <p class="text-muted small mb-0">Access your account</p>
+                    <h3 class="mb-0">Entrar</h3>
+                    <p class="text-muted small mb-0">Acesse sua conta</p>
                 </div>
                 <div class="card-body">
                     <form method="POST">
                         {{ form.hidden_tag() }}
                         
                         <div class="mb-3">
-                            {{ form.username.label(class="form-label") }}
-                            {{ form.username(class="form-control") }}
+                            <label for="username" class="form-label">Usuário</label>
+                            {{ form.username(class="form-control", placeholder="Digite seu usuário") }}
                             {% if form.username.errors %}
                                 <div class="text-danger small">
                                     {% for error in form.username.errors %}{{ error }}{% endfor %}
@@ -26,8 +26,8 @@
                         </div>
                         
                         <div class="mb-3">
-                            {{ form.password.label(class="form-label") }}
-                            {{ form.password(class="form-control") }}
+                            <label for="password" class="form-label">Senha</label>
+                            {{ form.password(class="form-control", placeholder="Digite sua senha") }}
                             {% if form.password.errors %}
                                 <div class="text-danger small">
                                     {% for error in form.password.errors %}{{ error }}{% endfor %}
@@ -36,14 +36,14 @@
                         </div>
                         
                         <button type="submit" class="btn btn-primary w-100">
-                            <i class="mdi mdi-login me-2"></i>Login
+                            <i class="mdi mdi-login me-2"></i>Entrar
                         </button>
                     </form>
                 </div>
                 <div class="card-footer text-center">
                     <small class="text-muted">
-                        Don't have an account? 
-                        <a href="{{ url_for('auth.register') }}">Register here</a>
+                        Não tem uma conta? 
+                        <a href="{{ url_for('auth.register') }}">Cadastre-se aqui</a>
                     </small>
                 </div>
             </div>

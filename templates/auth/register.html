@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Register - Digital Portfolio{% endblock %}
+{% block title %}Cadastrar - Portfólio Digital{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -8,16 +8,16 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header text-center">
-                    <h3 class="mb-0">Create Account</h3>
-                    <p class="text-muted small mb-0">Join the community</p>
+                    <h3 class="mb-0">Criar Conta</h3>
+                    <p class="text-muted small mb-0">Junte-se à comunidade</p>
                 </div>
                 <div class="card-body">
                     <form method="POST">
                         {{ form.hidden_tag() }}
                         
                         <div class="mb-3">
-                            {{ form.username.label(class="form-label") }}
-                            {{ form.username(class="form-control") }}
+                            <label for="username" class="form-label">Usuário</label>
+                            {{ form.username(class="form-control", placeholder="Digite seu nome de usuário") }}
                             {% if form.username.errors %}
                                 <div class="text-danger small">
                                     {% for error in form.username.errors %}{{ error }}{% endfor %}
@@ -26,8 +26,8 @@
                         </div>
                         
                         <div class="mb-3">
-                            {{ form.email.label(class="form-label") }}
-                            {{ form.email(class="form-control") }}
+                            <label for="email" class="form-label">Email</label>
+                            {{ form.email(class="form-control", placeholder="Digite seu email") }}
                             {% if form.email.errors %}
                                 <div class="text-danger small">
                                     {% for error in form.email.errors %}{{ error }}{% endfor %}
@@ -36,8 +36,8 @@
                         </div>
                         
                         <div class="mb-3">
-                            {{ form.full_name.label(class="form-label") }}
-                            {{ form.full_name(class="form-control") }}
+                            <label for="full_name" class="form-label">Nome Completo</label>
+                            {{ form.full_name(class="form-control", placeholder="Digite seu nome completo") }}
                             {% if form.full_name.errors %}
                                 <div class="text-danger small">
                                     {% for error in form.full_name.errors %}{{ error }}{% endfor %}
@@ -46,8 +46,8 @@
                         </div>
                         
                         <div class="mb-3">
-                            {{ form.password.label(class="form-label") }}
-                            {{ form.password(class="form-control") }}
+                            <label for="password" class="form-label">Senha</label>
+                            {{ form.password(class="form-control", placeholder="Digite sua senha") }}
                             {% if form.password.errors %}
                                 <div class="text-danger small">
                                     {% for error in form.password.errors %}{{ error }}{% endfor %}
@@ -56,8 +56,8 @@
                         </div>
                         
                         <div class="mb-3">
-                            {{ form.confirm_password.label(class="form-label") }}
-                            {{ form.confirm_password(class="form-control") }}
+                            <label for="confirm_password" class="form-label">Confirmar Senha</label>
+                            {{ form.confirm_password(class="form-control", placeholder="Confirme sua senha") }}
                             {% if form.confirm_password.errors %}
                                 <div class="text-danger small">
                                     {% for error in form.confirm_password.errors %}{{ error }}{% endfor %}
@@ -66,14 +66,14 @@
                         </div>
                         
                         <button type="submit" class="btn btn-primary w-100">
-                            <i class="mdi mdi-account-plus me-2"></i>Create Account
+                            <i class="mdi mdi-account-plus me-2"></i>Criar Conta
                         </button>
                     </form>
                 </div>
                 <div class="card-footer text-center">
                     <small class="text-muted">
-                        Already have an account? 
-                        <a href="{{ url_for('auth.login') }}">Login here</a>
+                        Já tem uma conta? 
+                        <a href="{{ url_for('auth.login') }}">Entre aqui</a>
                     </small>
                 </div>
             </div>

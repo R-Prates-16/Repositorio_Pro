@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ project.title }} - Digital Portfolio{% endblock %}
+{% block title %}{{ project.title }} - Portfólio Digital{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -11,8 +11,8 @@
             <div class="mb-4">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ url_for('public.index') }}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{ url_for('public.projects') }}">Projects</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('public.index') }}">Início</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('public.projects') }}">Projetos</a></li>
                         <li class="breadcrumb-item active">{{ project.title }}</li>
                     </ol>
                 </nav>
@@ -22,7 +22,7 @@
                         <h1 class="fw-bold">{{ project.title }}</h1>
                         <span class="badge bg-primary me-2">{{ project.category|title }}</span>
                         {% if project.is_featured %}
-                            <span class="badge bg-warning text-dark">Featured</span>
+                            <span class="badge bg-warning text-dark">Destaque</span>
                         {% endif %}
                     </div>
                     
@@ -31,7 +31,7 @@
                         {% if current_user.is_authenticated %}
                         <button class="like-btn btn p-2 {{ 'liked' if user_liked else '' }}" 
                                 data-project-id="{{ project.id }}"
-                                title="{{ 'Unlike' if user_liked else 'Like' }} this project">
+                                title="{{ 'Descurtir' if user_liked else 'Curtir' }} este projeto">
                             <i class="mdi mdi-heart"></i>
                             <span class="like-count">{{ project.like_count }}</span>
                         </button>
@@ -64,7 +64,7 @@
             <!-- Project Content -->
             {% if project.content %}
             <div class="mb-4">
-                <h3 class="fw-bold mb-3">Project Details</h3>
+                <h3 class="fw-bold mb-3">Detalhes do Projeto</h3>
                 <div class="content">
                     {{ project.content|safe }}
                 </div>
@@ -74,7 +74,7 @@
             <!-- Technologies -->
             {% if project.technologies %}
             <div class="mb-4">
-                <h4 class="fw-bold mb-3">Technologies Used</h4>
+                <h4 class="fw-bold mb-3">Tecnologias Utilizadas</h4>
                 <div class="d-flex flex-wrap gap-2">
                     {% for tech in project.technologies.split(',') %}
                         <span class="badge bg-secondary">{{ tech.strip() }}</span>
@@ -89,12 +89,12 @@
                 <div class="d-flex gap-3">
                     {% if project.demo_url %}
                     <a href="{{ project.demo_url }}" target="_blank" class="btn btn-success">
-                        <i class="mdi mdi-open-in-new me-2"></i>Live Demo
+                        <i class="mdi mdi-open-in-new me-2"></i>Demo ao Vivo
                     </a>
                     {% endif %}
                     {% if project.github_url %}
                     <a href="{{ project.github_url }}" target="_blank" class="btn btn-dark">
-                        <i class="mdi mdi-github me-2"></i>Source Code
+                        <i class="mdi mdi-github me-2"></i>Código Fonte
                     </a>
                     {% endif %}
                 </div>
@@ -102,7 +102,7 @@
             
             <!-- Comments Section -->
             <div class="comments-section">
-                <h4 class="fw-bold mb-4">Comments ({{ comments|length }})</h4>
+                <h4 class="fw-bold mb-4">Comentários ({{ comments|length }})</h4>
                 
                 <!-- Add Comment Form -->
                 {% if current_user.is_authenticated %}
@@ -111,7 +111,7 @@
                         <form method="POST" action="{{ url_for('public.add_comment', id=project.id) }}">
                             {{ form.hidden_tag() }}
                             <div class="mb-3">
-                                {{ form.content(class="form-control", placeholder="Share your thoughts about this project...") }}
+                                {{ form.content(class="form-control", placeholder="Compartilhe sua opinião sobre este projeto...") }}
                                 {% if form.content.errors %}
                                     <div class="text-danger small mt-1">
                                         {% for error in form.content.errors %}{{ error }}{% endfor %}
@@ -119,7 +119,7 @@
                                 {% endif %}
                             </div>
                             <button type="submit" class="btn btn-primary">
-                                <i class="mdi mdi-comment-plus me-2"></i>Add Comment
+                                <i class="mdi mdi-comment-plus me-2"></i>Adicionar Comentário
                             </button>
                         </form>
                     </div>
@@ -127,7 +127,7 @@
                 {% else %}
                 <div class="alert alert-info">
                     <i class="mdi mdi-information me-2"></i>
-                    <a href="{{ url_for('auth.login') }}">Login</a> to leave a comment.
+                    <a href="{{ url_for('auth.login') }}">Entre</a> para deixar um comentário.
                 </div>
                 {% endif %}
                 
@@ -144,7 +144,7 @@
                                     </div>
                                     <div>
                                         <h6 class="mb-0">{{ comment.author.full_name or comment.author.username }}</h6>
-                                        <small class="text-muted">{{ comment.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
+                                        <small class="text-muted">{{ comment.created_at.strftime('%d/%m/%Y às %H:%M') }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -156,7 +156,7 @@
                 {% else %}
                 <div class="text-center py-4 text-muted">
                     <i class="mdi mdi-comment-outline mdi-48px"></i>
-                    <p class="mt-2">No comments yet. Be the first to share your thoughts!</p>
+                    <p class="mt-2">Nenhum comentário ainda. Seja o primeiro a compartilhar sua opinião!</p>
                 </div>
                 {% endif %}
             </div>
@@ -168,19 +168,19 @@
                 <!-- Project Stats -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Project Stats</h5>
+                        <h5 class="card-title mb-0">Estatísticas do Projeto</h5>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Likes</span>
+                            <span>Curtidas</span>
                             <span class="fw-bold like-count">{{ project.like_count }}</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Comments</span>
+                            <span>Comentários</span>
                             <span class="fw-bold">{{ project.comment_count }}</span>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <span>Created</span>
+                            <span>Criado em</span>
                             <span class="fw-bold">{{ project.created_at.strftime('%b %Y') }}</span>
                         </div>
                     </div>
@@ -189,11 +189,11 @@
                 <!-- Related Projects -->
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">More Projects</h5>
+                        <h5 class="card-title mb-0">Mais Projetos</h5>
                     </div>
                     <div class="card-body">
                         <a href="{{ url_for('public.projects') }}" class="btn btn-outline-primary w-100">
-                            <i class="mdi mdi-folder-multiple me-2"></i>Browse All Projects
+                            <i class="mdi mdi-folder-multiple me-2"></i>Ver Todos os Projetos
                         </a>
                     </div>
                 </div>
