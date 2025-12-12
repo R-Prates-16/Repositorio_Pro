@@ -205,44 +205,7 @@
 
 {% block scripts %}
 <script>
-// Like functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const likeBtn = document.querySelector('.like-btn[data-project-id]');
-    if (likeBtn) {
-        likeBtn.addEventListener('click', function() {
-            const projectId = this.dataset.projectId;
-            const btn = this;
-            
-            fetch(`/project/${projectId}/like`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'same-origin'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    btn.classList.toggle('liked', data.liked);
-                    document.querySelectorAll('.like-count').forEach(el => {
-                        el.textContent = data.like_count;
-                    });
-                    window.showToast(data.liked ? 'Projeto curtido!' : 'Curtida removida', 'success');
-                } else {
-                    if (data.error === 'login_required') {
-                        window.showToast('Por favor, faça login para curtir.', 'error');
-                    } else {
-                        window.showToast(data.message || 'Erro ao processar curtida.', 'error');
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                window.showToast('Erro ao processar curtida. Tente novamente.', 'error');
-            });
-        });
-    }
-});
+
 
 // LinkedIn share functionality
 function shareOnLinkedIn() {

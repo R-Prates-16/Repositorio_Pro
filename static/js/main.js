@@ -199,8 +199,29 @@ function initializeLikeButtons() {
     }
 }
 
+const likeThrottleMap = new Map();
+
 function handleLike(button) {
     const projectId = button.dataset.projectId;
+    
+    // Throttle check: allow only one request per 250ms per project
+    const now = Date.now();
+    const lastClickTime = likeThrottleMap.get(projectId) || 0;
+    
+    if (now - lastClickTime < 250) {
+        console.log(`Like request throttled for project ${projectId}`);
+        return;
+    }
+    
+    likeThrottleMap.set(projectId, now);
+    
+    // Optimistic UI update
+    const isLiked = button.classList.contains('liked');
+    const newState = !isLiked;
+    button.classList.toggle('liked', newState);
+    
+    // Disable button temporarily to prevent rapid clicks
+    button.style.pointerEvents = 'none';
     
     fetch(`/project/${projectId}/like`, {
         method: 'POST',
@@ -212,7 +233,9 @@ function handleLike(button) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
+            // Ensure state matches server response
             button.classList.toggle('liked', data.liked);
+            
             const countEl = button.querySelector('.like-count');
             if (countEl) {
                 countEl.textContent = data.like_count;
@@ -227,6 +250,9 @@ function handleLike(button) {
                 window.showToast(data.liked ? 'Projeto curtido!' : 'Curtida removida', 'success');
             }
         } else {
+            // Revert state on error
+            button.classList.toggle('liked', isLiked);
+            
             if (data.error === 'login_required') {
                 if (window.showToast) {
                     window.showToast('Por favor, faça login para curtir.', 'error');
@@ -241,10 +267,16 @@ function handleLike(button) {
         }
     })
     .catch(error => {
+        // Revert state on error
+        button.classList.toggle('liked', isLiked);
         console.error('Like error:', error);
         if (window.showToast) {
             window.showToast('Erro ao processar curtida. Tente novamente.', 'error');
         }
+    })
+    .finally(() => {
+        // Re-enable button
+        button.style.pointerEvents = '';
     });
 }
 

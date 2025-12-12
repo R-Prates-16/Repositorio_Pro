@@ -138,41 +138,6 @@
 
 {% block scripts %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const likeBtns = document.querySelectorAll('.like-btn-card[data-project-id]');
-    likeBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const projectId = this.dataset.projectId;
-            const button = this;
-            
-            fetch(`/project/${projectId}/like`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'same-origin'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    button.classList.toggle('liked', data.liked);
-                    button.querySelector('.like-count').textContent = data.like_count;
-                    window.showToast(data.liked ? 'Projeto curtido!' : 'Curtida removida', 'success');
-                } else {
-                    if (data.error === 'login_required') {
-                        window.showToast('Por favor, faça login para curtir.', 'error');
-                    } else {
-                        window.showToast(data.message || 'Erro ao processar curtida.', 'error');
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                window.showToast('Erro ao processar curtida. Tente novamente.', 'error');
-            });
-        });
-    });
-});
+
 </script>
 {% endblock %}
